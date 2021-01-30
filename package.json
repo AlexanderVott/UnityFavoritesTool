@@ -1,0 +1,9 @@
+{
+  "name": "com.reddev.favtool",
+  "displayName": "Unity Favorite Tool",
+  "version": "0.1.0",
+  "unity": "2019.3",
+  "hideInEditor": false,
+  "type": "tool",
+  "category": ""
+}
