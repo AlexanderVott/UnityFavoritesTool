@@ -27,13 +27,19 @@ namespace FavTool.Models
 
 	    internal bool ContainsFavorite(string guid) => m_favorites.Contains(guid);
 
+	    public void CleanFavorites()
+	    {
+		    m_favorites.Clean();
+		    SerializeFavorites();
+	    }
+
 	    private void SerializeFavorites()
 	    {
-		    if (!m_favorites.IsDirty) 
-			    return;
+			if (!m_favorites.IsDirty)
+				return;
 
-		    EditorUtility.SetDirty(this);
-		    m_favorites.IsDirty = false;
-	    }
+			EditorUtility.SetDirty(this);
+			m_favorites.IsDirty = false;
+		}
     }
 }

@@ -114,7 +114,9 @@ namespace FavTool.Models
 			}
 
 			foreach (var itr in markedToRemoveGroups)
-				markedToRemoveGroups.Remove(itr);
+				m_groups.Remove(itr);
+
+			IsDirty = true;
 		}
     }
 }
