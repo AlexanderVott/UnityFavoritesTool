@@ -50,7 +50,7 @@ namespace FavTool.Models
 	        m_favoriteGUIDs = m_favoriteGUIDs.OrderBy(itr => Path.GetFileName(AssetDatabase.GUIDToAssetPath(itr))).ToList();
         }
 
-        internal bool ContainsGUID(string guid)
+        internal bool ContainsGuid(string guid)
         {
 	        return m_favoriteGUIDs.Contains(guid);
         }

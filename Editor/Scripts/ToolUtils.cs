@@ -7,8 +7,8 @@ namespace FavTool
     {
 	    internal static Object GetPrefabParent(Object obj) => PrefabUtility.GetCorrespondingObjectFromSource(obj);
 
-	    internal static string GetPathByGUID(string guid) => AssetDatabase.GUIDToAssetPath(guid);
+	    internal static string GetPathByGuid(string guid) => AssetDatabase.GUIDToAssetPath(guid);
 
-	    internal static string GetGUIDByPath(string path) => AssetDatabase.AssetPathToGUID(path);
+	    internal static string GetGuidByPath(string path) => AssetDatabase.AssetPathToGUID(path);
     }
 }

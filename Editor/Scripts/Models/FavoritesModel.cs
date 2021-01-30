@@ -20,7 +20,7 @@ namespace FavTool.Models
 		internal void Add(Object obj)
 		{
 			var path = GetPath(obj);
-			string guid = ToolUtils.GetGUIDByPath(path);
+			string guid = ToolUtils.GetGuidByPath(path);
 
 			Add(guid, path);
 		}
@@ -45,7 +45,7 @@ namespace FavTool.Models
 			else
 			{
 				var group = m_groups.Find(itr => itr.key == typeName);
-				if (!group.ContainsGUID(guid))
+				if (!group.ContainsGuid(guid))
 					group.Add(guid);
 			}
 
@@ -56,7 +56,7 @@ namespace FavTool.Models
 		{
 			foreach (var itr in groups)
 			{
-				if (itr.ContainsGUID(guid))
+				if (itr.ContainsGuid(guid))
 				{
 					itr.Remove(guid);
 					IsDirty = true;
@@ -68,7 +68,7 @@ namespace FavTool.Models
 		internal void Toggle(Object obj)
 		{
 			var path = GetPath(obj);
-			var guid = ToolUtils.GetGUIDByPath(path);
+			var guid = ToolUtils.GetGuidByPath(path);
 
 			if (Contains(guid))
 				Remove(guid);
@@ -84,7 +84,7 @@ namespace FavTool.Models
 
 		internal bool ContainsGroup(string typeName) => m_groups.Exists(itr => itr.key == typeName);
 		
-		internal bool Contains(string guid) => m_groups.Any(@group => @group.ContainsGUID(guid));
+		internal bool Contains(string guid) => m_groups.Any(@group => @group.ContainsGuid(guid));
 
 		internal void Sort()
 		{
@@ -99,7 +99,7 @@ namespace FavTool.Models
 				var markedToRemoveGUIDs = new List<string>();
 				foreach (var guid in itr.favoriteGUIDs)
 				{
-					string path = ToolUtils.GetPathByGUID(guid);
+					string path = ToolUtils.GetPathByGuid(guid);
 
 					if (String.IsNullOrEmpty(path) 
 							|| (!File.Exists(path)))//TODO: directory check
