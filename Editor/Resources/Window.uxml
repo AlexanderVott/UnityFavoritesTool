@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement style="height: 428px;">
+        <ui:VisualElement name="searchPanel" touch-scroll-type="Elastic" style="height: 23px;">
+            <ui:TextField picking-mode="Ignore" label="Filter" multiline="false" style="align-items: stretch; justify-content: flex-start; flex-direction: row; flex-wrap: nowrap;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="graggablePanel" style="height: 54px;" />
+        <ui:ScrollView name="groupsScroll" style="height: auto; flex-direction: column;" />
+    </ui:VisualElement>
+</ui:UXML>

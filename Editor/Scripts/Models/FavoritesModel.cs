@@ -17,6 +17,10 @@ namespace FavTool.Models
 
 		internal bool IsDirty { get; set; }
 
+		internal event Action<FavoritesGroupModel> onAddedGroup;
+		internal event Action<FavoritesGroupModel> onRemovedGroup;
+		internal event Action<FavoritesGroupModel> onChangedGroups;
+
 		internal void Add(Object obj)
 		{
 			var path = GetPath(obj);
@@ -39,14 +43,17 @@ namespace FavTool.Models
 
 			if (!ContainsGroup(typeName))
 			{
-				m_groups.Add(new FavoritesGroupModel(typeName, icon, new []{ guid }));
+				var group = new FavoritesGroupModel(typeName, icon, new[] {guid});
+				m_groups.Add(group);
 				Sort();
+				onAddedGroup?.Invoke(group);
 			}
 			else
 			{
 				var group = m_groups.Find(itr => itr.key == typeName);
 				if (!group.ContainsGuid(guid))
 					group.Add(guid);
+				onChangedGroups?.Invoke(group);
 			}
 
 			IsDirty = true;
@@ -60,6 +67,7 @@ namespace FavTool.Models
 				{
 					itr.Remove(guid);
 					IsDirty = true;
+					onChangedGroups?.Invoke(itr);
 					return;
 				}
 			}
@@ -108,13 +116,18 @@ namespace FavTool.Models
 
 				foreach (var guid in markedToRemoveGUIDs)
 					itr.favoriteGUIDs.Remove(guid);
+				if (markedToRemoveGUIDs.Count > 0)
+					onChangedGroups?.Invoke(itr);
 
 				if (itr.IsEmpty)
 					markedToRemoveGroups.Add(itr);
 			}
 
 			foreach (var itr in markedToRemoveGroups)
+			{
 				m_groups.Remove(itr);
+				onRemovedGroup?.Invoke(itr);
+			}
 
 			IsDirty = true;
 		}

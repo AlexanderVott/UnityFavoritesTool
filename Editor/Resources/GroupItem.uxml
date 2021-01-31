@@ -1,0 +1,12 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement>
+        <ui:Foldout text="Foldout" name="groupFoldout" style="flex-direction: column; width: auto;">
+            <ui:VisualElement name="groupPanel" style="height: auto; flex-direction: row; width: auto; min-height: 56px;">
+                <ui:VisualElement name="iconPanel" style="height: auto; width: 56px; justify-content: center;">
+                    <ui:VisualElement name="iconGroup" style="height: 48px; flex-shrink: 1; flex-direction: row; width: 48px;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="groupContent" style="height: auto; width: 90%;" />
+            </ui:VisualElement>
+        </ui:Foldout>
+    </ui:VisualElement>
+</ui:UXML>

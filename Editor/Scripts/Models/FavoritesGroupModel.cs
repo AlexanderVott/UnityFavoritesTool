@@ -21,6 +21,9 @@ namespace FavTool.Models
 
         public bool IsEmpty => m_favoriteGUIDs == null || m_favoriteGUIDs.Count == 0;
 
+        internal event Action<string> onAdded;
+        internal event Action<string> onRemoved;
+
         public FavoritesGroupModel(string keyParam, Texture iconParam)
         {
 	        m_key = keyParam;
@@ -37,12 +40,14 @@ namespace FavTool.Models
         {
 			m_favoriteGUIDs.Add(guid);
 			Sort();
+            onAdded?.Invoke(guid);
         }
 
         internal void Remove(string guid)
         {
 	        m_favoriteGUIDs.Remove(guid);
 	        Sort();
+            onRemoved?.Invoke(guid);
         }
 
         internal void Sort()
