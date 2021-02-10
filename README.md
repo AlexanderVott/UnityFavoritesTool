@@ -1,4 +1,4 @@
-# UnityFavoriteTool
+# UnityFavoritesTool
 
 Unity favorites tool is a tool that makes it easy to create your content.
 
