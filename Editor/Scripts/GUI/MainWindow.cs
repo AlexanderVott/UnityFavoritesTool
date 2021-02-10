@@ -12,7 +12,7 @@ namespace FavTool.GUI
 		private VisualElement m_root;
 		private VisualElement m_graggablePanel;
 
-		[MenuItem("RedDev/Show favorite window _%#T")]
+		[MenuItem("Window/Show favorite window _%#T")]
 	    public static void ShowFavoriteWindow()
 	    {
 		    var window = GetWindow<MainWindow>();
