@@ -10,11 +10,11 @@ namespace FavTool.Models
 	public class ProfileModel : ScriptableObject
     {
 	    [SerializeField] private FavoritesModel m_favorites = new FavoritesModel();
-	    public FavoritesModel Favorites => m_favorites;
+	    internal FavoritesModel Favorites => m_favorites;
 
 	    private static ProfileModel m_instance;
 
-	    public static ProfileModel Instance
+	    internal static ProfileModel Instance
 	    {
 		    get
 		    {
@@ -106,7 +106,7 @@ namespace FavTool.Models
 
 	    internal bool ContainsFavorite(string guid) => m_favorites.Contains(guid);
 
-	    public void CleanFavorites()
+	    internal void CleanFavorites()
 	    {
 		    m_favorites.Clean();
 		    SerializeFavorites();

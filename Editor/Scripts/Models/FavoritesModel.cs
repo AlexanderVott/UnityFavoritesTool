@@ -10,10 +10,10 @@ using Object = UnityEngine.Object;
 namespace FavTool.Models
 {
     [Serializable]
-    public class FavoritesModel
+    internal class FavoritesModel
     {
         [SerializeField] private List<FavoritesGroupModel> m_groups = new List<FavoritesGroupModel>();
-        public List<FavoritesGroupModel> groups => m_groups;
+        internal List<FavoritesGroupModel> groups => m_groups;
 
 		internal bool IsDirty { get; set; }
 

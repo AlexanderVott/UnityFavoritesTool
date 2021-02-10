@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 namespace FavTool.GUI
 {
-    public class ItemVisual : VisualElement
+    internal class ItemVisual : VisualElement
     {
 	    private FavoritesGroupModel data;
 	    private string guid;
@@ -13,7 +13,7 @@ namespace FavTool.GUI
 	    private ObjectField field;
 	    private VisualElement icon;
 		
-	    public ItemVisual(FavoritesGroupModel item, string guid) : base()
+	    internal ItemVisual(FavoritesGroupModel item, string guid) : base()
 	    {
 			Initialize(item, guid);
 	    }

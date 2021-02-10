@@ -42,7 +42,7 @@ namespace FavTool.GUI
 	    {
 		    m_groupsScroll = m_root.Q<ScrollView>("groupsScroll");
 
-		    m_graggablePanel = m_root;//.Q<VisualElement>("graggablePanel");
+		    m_graggablePanel = m_root;
 
 		    var filterField = m_root.Q<TextField>("filterField");
 			filterField.RegisterCallback<ChangeEvent<string>>(x =>

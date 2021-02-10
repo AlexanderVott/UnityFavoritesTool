@@ -5,21 +5,21 @@ using UnityEngine.UIElements;
 
 namespace FavTool.GUI
 {
-    public class GroupVisual : VisualElement
+	internal class GroupVisual : VisualElement
     {
 	    private FavoritesGroupModel data;
 
 	    private VisualElement groupContent;
 
 	    private Dictionary<string, ItemVisual> items = new Dictionary<string, ItemVisual>();
-		
-	    public GroupVisual(FavoritesGroupModel group) : base()
+
+	    internal GroupVisual(FavoritesGroupModel group) : base()
 	    {
 		    Initialize(group, null);
 		    SubscribeEvents();
 	    }
 
-	    public GroupVisual(FavoritesGroupModel group, in List<string> guids) : base()
+	    internal GroupVisual(FavoritesGroupModel group, in List<string> guids) : base()
 	    {
 		    Initialize(group, guids);
 		    SubscribeEvents();
@@ -53,13 +53,13 @@ namespace FavTool.GUI
 				OnAddedItem(itr);
 		}
 
-	    public void SubscribeEvents()
+		internal void SubscribeEvents()
 	    {
 		    data.onAdded += OnAddedItem;
 		    data.onRemoved += OnRemovedItem;
 	    }
 
-	    public void UnsubscribeEvents()
+	    internal void UnsubscribeEvents()
 	    {
 		    data.onAdded -= OnAddedItem;
 		    data.onRemoved -= OnRemovedItem;
