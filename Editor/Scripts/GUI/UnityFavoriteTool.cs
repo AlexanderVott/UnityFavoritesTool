@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 
 namespace FavTool.GUI
 {
-    public class RedDevFavTool : EditorWindow
+    public class UnityFavoriteTool : EditorWindow
     {
 	    private ProfileModel m_profile;
 		private ScrollView m_groupsScroll;
@@ -20,8 +20,8 @@ namespace FavTool.GUI
 		[MenuItem("Window/Show favorites window _%#T")]
 	    public static void ShowFavoriteWindow()
 	    {
-		    var window = GetWindow<RedDevFavTool>();
-		    window.titleContent = new GUIContent("RedDev Favorite Tool");
+		    var window = GetWindow<UnityFavoriteTool>();
+		    window.titleContent = new GUIContent("Favorite Tool");
 		    window.minSize = new Vector2(250, 50);
 	    }
 
