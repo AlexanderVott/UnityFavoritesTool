@@ -1,5 +1,10 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
     <ui:VisualElement style="height: 428px;">
+        <ui:VisualElement name="tabs" style="flex-direction: row; flex-wrap: wrap;">
+            <ui:Button text="Tab1" display-tooltip-when-elided="true" name="tab1" />
+            <ui:Button text="Tab2" display-tooltip-when-elided="true" name="tab2" />
+            <ui:Button text="Tab3" display-tooltip-when-elided="true" name="tab3" />
+        </ui:VisualElement>
         <ui:VisualElement name="searchPanel" touch-scroll-type="Elastic" style="height: 24px; flex-shrink: 0; flex-grow: 0; min-height: auto; flex-basis: 24px;">
             <ui:TextField picking-mode="Ignore" label="Filter" multiline="false" name="filterField" style="align-items: stretch; justify-content: flex-start; flex-direction: row; flex-wrap: nowrap; height: auto;" />
         </ui:VisualElement>

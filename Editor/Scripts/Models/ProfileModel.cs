@@ -8,8 +8,29 @@ using Object = UnityEngine.Object;
 namespace FavTool.Models
 {
 	public class ProfileModel : ScriptableObject
-    {
-	    [SerializeField] private FavoritesModel m_favorites = new FavoritesModel();
+	{
+		internal enum ModeState
+		{
+			Favorites = 0,
+			History,
+			Frequency
+		}
+
+		[SerializeField] private ModeState state = ModeState.Favorites;
+		internal ModeState State
+		{
+			get => state;
+			set
+			{
+				var oldState = state;
+				state = value;
+				onChangeState?.Invoke(state, oldState);
+			}
+		}
+
+		internal event Action<ModeState, ModeState> onChangeState;
+
+		[SerializeField] private FavoritesModel m_favorites = new FavoritesModel();
 	    internal FavoritesModel Favorites => m_favorites;
 
 	    private static ProfileModel m_instance;
