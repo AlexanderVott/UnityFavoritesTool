@@ -15,11 +15,17 @@ namespace FavTool.GUI
 		
 	    public GroupVisual(FavoritesGroupModel group) : base()
 	    {
-		    Initialize(group);
+		    Initialize(group, null);
 		    SubscribeEvents();
 	    }
 
-	    private void Initialize(FavoritesGroupModel group)
+	    public GroupVisual(FavoritesGroupModel group, in List<string> guids) : base()
+	    {
+		    Initialize(group, guids);
+		    SubscribeEvents();
+	    }
+
+		private void Initialize(FavoritesGroupModel group, in List<string> guids)
 	    {
 		    const string UEngineName = "UnityEngine.";
 
@@ -38,12 +44,12 @@ namespace FavTool.GUI
 
 		    groupContent = this.Q<VisualElement>("groupContent");
 
-		    InitializeItems();
+		    InitializeItems(guids != null ? guids : group.favoriteGUIDs);
 	    }
 
-		private void InitializeItems()
+		private void InitializeItems(in List<string> guids)
 		{
-			foreach (var itr in data.favoriteGUIDs) 
+			foreach (var itr in guids)
 				OnAddedItem(itr);
 		}
 
@@ -71,10 +77,15 @@ namespace FavTool.GUI
 			items[guid].RemoveFromHierarchy();
 			items.Remove(guid);
 			ProfileModel.Instance.CleanFavorites();
+			Clean();
+	    }
+
+		internal void Clean()
+		{
 			if (groupContent.childCount == 0)
 			{
 				RemoveFromHierarchy();
 			}
-	    }
+		}
 	}
 }
