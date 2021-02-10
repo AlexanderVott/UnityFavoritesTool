@@ -39,6 +39,11 @@ namespace FavTool.GUI
 		    field.allowSceneObjects = false;
 		    field.objectType = typeof(Object);
 		    field.value = ToolUtils.GetObject<Object>(this.guid);
+			field.RegisterCallback<ChangeEvent<Object>>(e =>
+			{
+				if (e.newValue != e.previousValue && e.newValue != ToolUtils.GetObject<Object>(this.guid))
+					field.value = e.previousValue;
+			});
 
 		    var btnDelete = this.Q<Button>("btnDelete");
 		    btnDelete.clickable.clicked += () =>

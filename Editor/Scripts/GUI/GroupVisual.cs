@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using FavTool.Models;
 using UnityEngine;
@@ -12,7 +11,7 @@ namespace FavTool.GUI
 
 	    private VisualElement groupContent;
 
-	    private Dictionary<string, VisualElement> items = new Dictionary<string, VisualElement>();
+	    private Dictionary<string, ItemVisual> items = new Dictionary<string, ItemVisual>();
 		
 	    public GroupVisual(FavoritesGroupModel group) : base()
 	    {
@@ -69,9 +68,13 @@ namespace FavTool.GUI
 
 	    private void OnRemovedItem(string guid)
 	    {
-			groupContent.Remove(items[guid]);
+			items[guid].RemoveFromHierarchy();
 			items.Remove(guid);
-			data.Remove(guid);
+			ProfileModel.Instance.CleanFavorites();
+			if (groupContent.childCount == 0)
+			{
+				RemoveFromHierarchy();
+			}
 	    }
 	}
 }

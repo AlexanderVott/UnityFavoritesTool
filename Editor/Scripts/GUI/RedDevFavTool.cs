@@ -5,17 +5,17 @@ using UnityEngine.UIElements;
 
 namespace FavTool.GUI
 {
-    public class MainWindow : EditorWindow
+    public class RedDevFavTool : EditorWindow
     {
 	    private ProfileModel m_profile;
 		private ScrollView m_groupsScroll;
 		private VisualElement m_root;
 		private VisualElement m_graggablePanel;
-
+		
 		[MenuItem("Window/Show favorites window _%#T")]
 	    public static void ShowFavoriteWindow()
 	    {
-		    var window = GetWindow<MainWindow>();
+		    var window = GetWindow<RedDevFavTool>();
 		    window.titleContent = new GUIContent("RedDev Favorite Tool");
 		    window.minSize = new Vector2(250, 50);
 	    }
@@ -31,10 +31,7 @@ namespace FavTool.GUI
 			SubscribeEvents();
 	    }
 
-	    void OnDisable()
-	    {
-		    UnSubscribeEvents();
-	    }
+	    void OnDisable() => UnSubscribeEvents();
 
 	    private void PrepareWindow()
 	    {
@@ -42,11 +39,9 @@ namespace FavTool.GUI
 
 		    m_graggablePanel = m_root;//.Q<VisualElement>("graggablePanel");
 
-		    foreach (var itrG in m_profile.Favorites.groups)
-		    {
-				OnAddedGroup(itrG);
-		    }
-		}
+		    foreach (var itrG in m_profile.Favorites.groups) 
+			    OnAddedGroup(itrG);
+	    }
 
 	    private void SubscribeEvents()
 	    {
