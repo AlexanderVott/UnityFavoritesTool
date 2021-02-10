@@ -23,7 +23,7 @@ namespace FavTool.Models
 
         internal event Action<string> onAdded;
         internal event Action<string> onRemoved;
-
+        
         public FavoritesGroupModel(string keyParam, Texture iconParam)
         {
 	        m_key = keyParam;
@@ -40,7 +40,7 @@ namespace FavTool.Models
         {
 			m_favoriteGUIDs.Add(guid);
 			Sort();
-            onAdded?.Invoke(guid);
+			onAdded?.Invoke(guid);
         }
 
         internal void Remove(string guid)

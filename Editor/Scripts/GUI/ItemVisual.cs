@@ -11,6 +11,7 @@ namespace FavTool.GUI
 	    private string guid;
 
 	    private ObjectField field;
+	    private VisualElement icon;
 		
 	    public ItemVisual(FavoritesGroupModel item, string guid) : base()
 	    {
@@ -24,6 +25,15 @@ namespace FavTool.GUI
 
 		    var template = Resources.Load<VisualTreeAsset>("Item");
 		    template.CloneTree(this);
+
+		    icon = this.Q<VisualElement>("iconItem");
+		    var preview = ToolUtils.GetPreviewAsset(ToolUtils.GetAssetByGuid<Object>(guid));
+		    if (preview == null)
+		    {
+			    preview = ToolUtils.GetThumbnailAsset(ToolUtils.GetAssetByGuid<Object>(guid));
+		    }
+		    var bg = Background.FromTexture2D(preview);
+			icon.style.backgroundImage = bg;
 
 		    field = this.Q<ObjectField>("groupItem");
 		    field.allowSceneObjects = false;

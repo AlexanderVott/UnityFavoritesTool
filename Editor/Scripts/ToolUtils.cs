@@ -13,7 +13,7 @@ namespace FavTool
 
 	    internal static T GetObject<T>(string guid) where T: Object => AssetDatabase.LoadAssetAtPath<T>(GetPathByGuid(guid));
 
-	    public static Texture2D ToTexture2D(this Texture texture)
+	    internal static Texture2D ToTexture2D(this Texture texture)
 	    {
 		    return Texture2D.CreateExternalTexture(
 			    texture.width,
@@ -21,6 +21,19 @@ namespace FavTool
 			    TextureFormat.RGB24,
 			    false, false,
 			    texture.GetNativeTexturePtr());
+	    }
+
+	    internal static Object GetAssetByGuid<T>(string guid) where T: Object => AssetDatabase.LoadAssetAtPath<T>(GetPathByGuid(guid));
+		internal static Object GetAsset<T>(string path) where T : Object => AssetDatabase.LoadAssetAtPath<T>(path);
+
+	    internal static Texture2D GetPreviewAsset(Object obj)
+	    {
+		    return AssetPreview.GetAssetPreview(obj);
+	    }
+
+	    internal static Texture2D GetThumbnailAsset(Object obj)
+	    {
+		    return AssetPreview.GetMiniThumbnail(obj);
 	    }
     }
 }

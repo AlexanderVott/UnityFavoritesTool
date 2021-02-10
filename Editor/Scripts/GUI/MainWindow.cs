@@ -41,7 +41,11 @@ namespace FavTool.GUI
 		    m_groupsScroll = m_root.Q<ScrollView>("groupsScroll");
 
 		    m_graggablePanel = m_root;//.Q<VisualElement>("graggablePanel");
-			
+
+		    foreach (var itrG in m_profile.Favorites.groups)
+		    {
+				OnAddedGroup(itrG);
+		    }
 		}
 
 	    private void SubscribeEvents()
@@ -67,12 +71,8 @@ namespace FavTool.GUI
 
 	    private void AddDraggable(DragExitedEvent e)
 	    {
-		    foreach (var itr in DragAndDrop.paths)
-		    {
+		    foreach (var itr in DragAndDrop.paths) 
 			    m_profile.AddFavorite(ToolUtils.GetGuidByPath(itr), itr);
-
-			    Debug.Log(itr);
-		    }
-		}
+	    }
     }
 }

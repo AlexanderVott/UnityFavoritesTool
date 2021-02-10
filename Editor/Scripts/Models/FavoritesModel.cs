@@ -46,13 +46,18 @@ namespace FavTool.Models
 				var group = new FavoritesGroupModel(typeName, icon, new[] {guid});
 				m_groups.Add(group);
 				Sort();
+				IsDirty = true;
 				onAddedGroup?.Invoke(group);
 			}
 			else
 			{
 				var group = m_groups.Find(itr => itr.key == typeName);
 				if (!group.ContainsGuid(guid))
+				{
 					group.Add(guid);
+					IsDirty = true;
+				}
+
 				onChangedGroups?.Invoke(group);
 			}
 

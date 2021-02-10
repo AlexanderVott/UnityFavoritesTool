@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using FavTool.Models;
 using UnityEngine;
@@ -12,7 +13,7 @@ namespace FavTool.GUI
 	    private VisualElement groupContent;
 
 	    private Dictionary<string, VisualElement> items = new Dictionary<string, VisualElement>();
-
+		
 	    public GroupVisual(FavoritesGroupModel group) : base()
 	    {
 		    Initialize(group);
@@ -21,9 +22,16 @@ namespace FavTool.GUI
 
 	    private void Initialize(FavoritesGroupModel group)
 	    {
+		    const string UEngineName = "UnityEngine.";
+
 		    this.data = group;
 		    var template = Resources.Load<VisualTreeAsset>("GroupItem");
 		    template.CloneTree(this);
+
+		    var foldout = this.Q<Foldout>("groupFoldout");
+		    foldout.text = @group.key.Contains(UEngineName) 
+							? @group.key.Remove(0, UEngineName.Length) 
+							: @group.key;
 
 		    var texture = this.Q<VisualElement>("iconGroup");
 		    var bg = Background.FromTexture2D(@group.icon.ToTexture2D());
@@ -36,10 +44,8 @@ namespace FavTool.GUI
 
 		private void InitializeItems()
 		{
-			foreach (var itr in data.favoriteGUIDs)
-			{
+			foreach (var itr in data.favoriteGUIDs) 
 				OnAddedItem(itr);
-			}
 		}
 
 	    public void SubscribeEvents()
@@ -65,6 +71,7 @@ namespace FavTool.GUI
 	    {
 			groupContent.Remove(items[guid]);
 			items.Remove(guid);
+			data.Remove(guid);
 	    }
 	}
 }

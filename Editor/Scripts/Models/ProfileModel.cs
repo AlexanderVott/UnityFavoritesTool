@@ -7,9 +7,9 @@ using Object = UnityEngine.Object;
 
 namespace FavTool.Models
 {
-    public class ProfileModel : ScriptableObject
+	public class ProfileModel : ScriptableObject
     {
-	    private FavoritesModel m_favorites = new FavoritesModel();
+	    [SerializeField] private FavoritesModel m_favorites = new FavoritesModel();
 	    public FavoritesModel Favorites => m_favorites;
 
 	    private static ProfileModel m_instance;
@@ -77,12 +77,6 @@ namespace FavTool.Models
 				return null;
 		    }
 
-		    /*if (!AssetDatabase.IsValidFolder(packageDir))
-		    {
-				Debug.LogError($"Directory is not valid {packageDir}");
-				return null;
-		    }*/
-
 		    return packageDir;
 	    }
 
@@ -124,6 +118,7 @@ namespace FavTool.Models
 				return;
 
 			EditorUtility.SetDirty(this);
+			AssetDatabase.SaveAssets();
 			m_favorites.IsDirty = false;
 		}
     }
