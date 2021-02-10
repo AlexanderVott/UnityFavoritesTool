@@ -11,7 +11,7 @@ namespace FavTool.GUI
 
 	    private VisualElement groupContent;
 
-	    private Dictionary<string, ItemVisual> items = new Dictionary<string, ItemVisual>();
+	    private readonly Dictionary<string, ItemVisual> items = new Dictionary<string, ItemVisual>();
 
 	    internal GroupVisual(FavoritesGroupModel group) : base()
 	    {
@@ -82,10 +82,8 @@ namespace FavTool.GUI
 
 		internal void Clean()
 		{
-			if (groupContent.childCount == 0)
-			{
+			if (groupContent.childCount == 0) 
 				RemoveFromHierarchy();
-			}
 		}
 	}
 }

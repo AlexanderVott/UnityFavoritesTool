@@ -13,8 +13,7 @@ namespace FavTool.Models
 	    internal FavoritesModel Favorites => m_favorites;
 
 	    private static ProfileModel m_instance;
-
-	    internal static ProfileModel Instance
+		internal static ProfileModel Instance
 	    {
 		    get
 		    {
