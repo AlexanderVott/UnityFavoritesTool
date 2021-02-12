@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using FavTool.Models;
 using UnityEditor;
 using UnityEngine;
@@ -11,11 +7,23 @@ namespace FavTool.GUI
 {
     public class UnityFavoriteTool : EditorWindow
     {
-	    private ProfileModel m_profile;
-		private ScrollView m_groupsScroll;
-		private VisualElement m_root;
-		private VisualElement m_graggablePanel;
-		
+	    private ProfileModel profile;
+		private VisualElement root;
+
+		private VisualElement favoritesPanel;
+		private VisualElement historyPanel;
+		private VisualElement frequencyPanel;
+
+		private BaseController currentController;
+
+		private FavoritesController favController;
+		private HistoryController histController;
+		private FrequencyController freqController;
+
+		private VisualElement tab1;
+		private VisualElement tab2;
+		private VisualElement tab3;
+
 		private string filter;
 
 		private readonly string SelectedClassUSS = "selected_tab";
@@ -30,141 +38,78 @@ namespace FavTool.GUI
 
 	    void OnEnable()
 	    {
-		    m_profile = ProfileModel.Instance;
-		    m_root = rootVisualElement;
-		    m_root.styleSheets.Add(Resources.Load<StyleSheet>("WindowStyleSheet"));
+		    profile = ProfileModel.Instance;
+		    root = rootVisualElement;
+		    root.styleSheets.Add(Resources.Load<StyleSheet>("WindowStyleSheet"));
 			var windowTree = Resources.Load<VisualTreeAsset>("Window");
-		    windowTree.CloneTree(m_root);
+		    windowTree.CloneTree(root);
 
 		    PrepareWindow();
-			SubscribeEvents();
 	    }
 
-	    void OnDisable() => UnSubscribeEvents();
+	    void OnDisable()
+	    {
+		    favController.Dispose();
+		    histController.Dispose();
+		    freqController.Dispose();
+	    }
 
 	    private void PrepareWindow()
 	    {
-		    m_groupsScroll = m_root.Q<ScrollView>("groupsScroll");
+		    favoritesPanel = root.Q<VisualElement>("favoritesPanel");
+		    historyPanel   = root.Q<VisualElement>("historyPanel");
+		    frequencyPanel = root.Q<VisualElement>("frequencyPanel");
 
-		    m_graggablePanel = m_root;
+		    favController = new FavoritesController(favoritesPanel);
+		    histController = new HistoryController(historyPanel);
+		    freqController = new FrequencyController(frequencyPanel);
 
-		    var filterField = m_root.Q<TextField>("filterField");
-			filterField.RegisterCallback<ChangeEvent<string>>(x =>
-			{
-				Filter(x.newValue);
-			});
+			var filterField = root.Q<TextField>("filterField");
+			filterField.RegisterCallback<ChangeEvent<string>>(x => currentController?.Filter(x.newValue));
 
-			var tab1 = m_root.Q<VisualElement>("tab1");
-			var tab2 = m_root.Q<VisualElement>("tab2");
-			var tab3 = m_root.Q<VisualElement>("tab3");
-			m_profile.onChangeState += (newValue, prefValue) =>
-			{
-				m_groupsScroll.AddToClassList("hide");
-
-				tab1.RemoveFromClassList(SelectedClassUSS);
-				tab2.RemoveFromClassList(SelectedClassUSS);
-				tab3.RemoveFromClassList(SelectedClassUSS);
-				switch (newValue)
-				{
-					case ProfileModel.ModeState.Favorites:
-						m_groupsScroll.RemoveFromClassList("hide");
-						tab1.AddToClassList(SelectedClassUSS);
-						break;
-					case ProfileModel.ModeState.History:
-						tab2.AddToClassList(SelectedClassUSS);
-						break;
-					case ProfileModel.ModeState.Frequency:
-						tab3.AddToClassList(SelectedClassUSS);
-						break;
-				}
-			};
-			tab1.RegisterCallback<ClickEvent>(x => m_profile.State = ProfileModel.ModeState.Favorites);
-			tab2.RegisterCallback<ClickEvent>(x => m_profile.State = ProfileModel.ModeState.History);
-			tab3.RegisterCallback<ClickEvent>(x => m_profile.State = ProfileModel.ModeState.Frequency);
-
-			foreach (var itrG in m_profile.Favorites.groups) 
-			    OnAddedGroup(itrG);
+			tab1 = root.Q<VisualElement>("tab1");
+			tab2 = root.Q<VisualElement>("tab2");
+			tab3 = root.Q<VisualElement>("tab3");
+			profile.onChangeState += (newValue, prefValue) => SwitchTabs(newValue);
+			tab1.RegisterCallback<ClickEvent>(x => profile.State = ProfileModel.ModeState.Favorites);
+			tab2.RegisterCallback<ClickEvent>(x => profile.State = ProfileModel.ModeState.History);
+			tab3.RegisterCallback<ClickEvent>(x => profile.State = ProfileModel.ModeState.Frequency);
+			
+			SwitchTabs(profile.State);
 	    }
 
-	    private void SubscribeEvents()
-	    {
-		    m_graggablePanel.RegisterCallback<DragExitedEvent>(AddDraggable);
-			m_profile.Favorites.onAddedGroup += OnAddedGroup;
-	    }
+	    private void HidePanel(VisualElement panel) => panel.AddToClassList("hide");
+		private void ShowPanel(VisualElement panel) => panel.RemoveFromClassList("hide");
 
-	    private void UnSubscribeEvents()
+	    private void SwitchTabs(ProfileModel.ModeState state)
 	    {
-			m_graggablePanel.UnregisterCallback<DragExitedEvent>(AddDraggable);
-		    m_profile.Favorites.onAddedGroup -= OnAddedGroup;
+		    HidePanel(favoritesPanel);
+		    HidePanel(historyPanel);
+		    HidePanel(frequencyPanel);
 
-		    foreach (var itr in m_groupsScroll.Children())
-			    if (itr is GroupVisual group)
-				    group.UnsubscribeEvents();
-	    }
-
-	    private void OnAddedGroup(FavoritesGroupModel group)
-	    {
-		    if (!string.IsNullOrEmpty(filter))
+		    tab1.RemoveFromClassList(SelectedClassUSS);
+		    tab2.RemoveFromClassList(SelectedClassUSS);
+		    tab3.RemoveFromClassList(SelectedClassUSS);
+		    currentController = null;
+		    switch (state)
 		    {
-			    var filteredItems = FilterGuids(@group.favoriteGUIDs);
-				if (filteredItems.Count == 0)
-					return;
-				m_groupsScroll.Add(new GroupVisual(@group, filteredItems));
-		    } else 
-				m_groupsScroll.Add(new GroupVisual(@group));
-	    }
-
-		private List<string> FilterGuids(List<string> guids)
-		{
-			var result = new List<string>();
-			foreach (var itr in guids)
-			{
-				var name = Path.GetFileNameWithoutExtension(ToolUtils.GetPathByGuid(itr));
-				if (!name.Contains(filter))
-					continue;
-				result.Add(itr);
-			}
-
-			return result;
-		}
-
-	    private void AddDraggable(DragExitedEvent e)
-	    {
-		    if (!string.IsNullOrEmpty(filter))
-		    {
-			    foreach (var itr in DragAndDrop.paths)
-				    m_profile.AddFavorite(ToolUtils.GetGuidByPath(itr), itr);
+			    case ProfileModel.ModeState.Favorites:
+				    ShowPanel(favoritesPanel);
+				    tab1.AddToClassList(SelectedClassUSS);
+				    currentController = favController;
+				    break;
+			    case ProfileModel.ModeState.History:
+				    ShowPanel(historyPanel);
+				    tab2.AddToClassList(SelectedClassUSS);
+				    currentController = histController;
+				    break;
+			    case ProfileModel.ModeState.Frequency:
+				    ShowPanel(frequencyPanel);
+				    tab3.AddToClassList(SelectedClassUSS);
+				    currentController = freqController;
+				    break;
 		    }
-		    else
-		    {
-			    foreach (var itr in DragAndDrop.paths)
-					if (Path.GetFileNameWithoutExtension(itr).Contains(filter))
-						m_profile.AddFavorite(ToolUtils.GetGuidByPath(itr), itr);
-			}
-	    }
-
-	    internal void ClearVisual()
-	    {
-		    m_groupsScroll.Clear();
-	    }
-
-	    internal void CleanGroups()
-	    {
-		    foreach (var itr in m_groupsScroll.Children().Select(x=>x as GroupVisual))
-		    {
-				if (itr == null)
-					continue;
-				itr.Clean();
-		    }
-	    }
-
-	    internal void Filter(string filterValue)
-	    {
-		    filter = filterValue;
-		    ClearVisual();
-		    foreach (var itrG in m_profile.Favorites.groups) 
-			    OnAddedGroup(itrG);
-		    CleanGroups();
+			currentController?.Filter(filter);
 	    }
     }
 }
