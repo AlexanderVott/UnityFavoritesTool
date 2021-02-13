@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using FavTool.GUI;
 using FavTool.Models;
 using UnityEditor;
 using UnityEngine.UIElements;
@@ -10,13 +9,13 @@ namespace FavTool
 {
     internal class FavoritesController : BaseController
     {
-	    private ProfileModel _profile;
 	    private ScrollView _favGroupsScroll;
+	    private readonly List<GroupController> _groups = new List<GroupController>();
 
 		internal FavoritesController(VisualElement root) : base(root)
 		{
 			_profile = ProfileModel.Instance;
-			_favGroupsScroll = panel.Q<ScrollView>("favGroupsScroll");
+			_favGroupsScroll = _panel.Q<ScrollView>("favGroupsScroll");
 
 			foreach (var itrG in _profile.Favorites.groups)
 				OnAddedGroup(itrG);
@@ -27,17 +26,16 @@ namespace FavTool
 		protected override void SubscribeEvents()
 		{
 			_profile.Favorites.onAddedGroup += OnAddedGroup;
-			panel.RegisterCallback<DragExitedEvent>(AddDraggable);
+			_panel.RegisterCallback<DragExitedEvent>(AddDraggable);
 		}
 
 		protected override void UnSubscribeEvents()
 		{
-			panel.UnregisterCallback<DragExitedEvent>(AddDraggable);
+			_panel.UnregisterCallback<DragExitedEvent>(AddDraggable);
 			_profile.Favorites.onAddedGroup -= OnAddedGroup;
 
-			foreach (var itr in _favGroupsScroll.Children())
-				if (itr is GroupVisual group)
-					group.UnsubscribeEvents();
+			foreach (var itr in _groups)
+				itr.UnsubscribeEvents();
 		}
 
 		private void OnAddedGroup(FavoritesGroupModel group)
@@ -47,11 +45,15 @@ namespace FavTool
 			    var filteredItems = FilterGuids(@group.favoriteGUIDs);
 			    if (filteredItems.Count == 0)
 				    return;
-			    _favGroupsScroll.Add(new GroupVisual(@group, filteredItems));
+			    _groups.Add(new GroupController(@group, filteredItems));
+			    _favGroupsScroll.Add(_groups.Last().Visual);
 		    }
 		    else
-			    _favGroupsScroll.Add(new GroupVisual(@group));
-		}
+		    {
+				_groups.Add(new GroupController(@group));
+			    _favGroupsScroll.Add(_groups.Last().Visual);
+		    }
+	    }
 
 		private void AddDraggable(DragExitedEvent e)
 		{
@@ -70,12 +72,13 @@ namespace FavTool
 
 		internal void ClearVisual()
 		{
+			_groups.Clear();
 			_favGroupsScroll.Clear();
 		}
 
 		internal void CleanGroups()
 		{
-			foreach (var itr in _favGroupsScroll.Children().Select(x => x as GroupVisual))
+			foreach (var itr in _groups)
 			{
 				if (itr == null)
 					continue;

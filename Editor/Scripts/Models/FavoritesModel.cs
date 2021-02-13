@@ -23,7 +23,7 @@ namespace FavTool.Models
 
 		internal void Add(Object obj)
 		{
-			var path = GetPath(obj);
+			var path = ToolUtils.GetPath(obj);
 			string guid = ToolUtils.GetGuidByPath(path);
 
 			Add(guid, path);
@@ -80,19 +80,13 @@ namespace FavTool.Models
 
 		internal void Toggle(Object obj)
 		{
-			var path = GetPath(obj);
+			var path = ToolUtils.GetPath(obj);
 			var guid = ToolUtils.GetGuidByPath(path);
 
 			if (Contains(guid))
 				Remove(guid);
 			else
 				Add(guid, path);
-		}
-
-		private string GetPath(Object obj)
-		{
-			var prefabRef = ToolUtils.GetPrefabParent(obj);
-			return AssetDatabase.GetAssetPath(prefabRef != null ? prefabRef : obj);
 		}
 
 		internal bool ContainsGroup(string typeName) => _groups.Exists(itr => itr.key == typeName);

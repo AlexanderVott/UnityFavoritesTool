@@ -33,6 +33,9 @@ namespace FavTool.Models
 		[SerializeField] private FavoritesModel _favorites = new FavoritesModel();
 	    internal FavoritesModel Favorites => _favorites;
 
+	    [SerializeField] private HistoryModel _history = new HistoryModel();
+	    internal HistoryModel History => _history;
+
 	    private static ProfileModel _instance;
 		internal static ProfileModel Instance
 	    {
@@ -53,7 +56,7 @@ namespace FavTool.Models
 		    ProfileModel profile = null;
 		    if (config.Length >= 1)
 		    {
-			    profile = ToolUtils.GetObject<ProfileModel>(config[0]);
+			    profile = ToolUtils.GetAssetByGuid<ProfileModel>(config[0]);
 		    }
 			if (profile == null)
 			{
@@ -98,6 +101,13 @@ namespace FavTool.Models
 		    }
 
 		    return packageDir;
+	    }
+
+	    internal void AddHistory(Object obj)
+	    {
+		    var path = ToolUtils.GetPath(obj);
+		    var guid = ToolUtils.GetGuidByPath(path);
+			_history.Add(guid);
 	    }
 
 	    internal void AddFavorite(Object obj)

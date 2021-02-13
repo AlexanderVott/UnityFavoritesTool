@@ -12,8 +12,10 @@
             <ui:ScrollView name="favGroupsScroll" style="height: auto; flex-direction: column; flex-grow: 1;" />
         </ui:VisualElement>
         <ui:VisualElement name="HistoryController" style="min-height: 100px;">
-            <ui:ScrollView name="groupsScroll" style="height: auto; flex-direction: column;" />
+            <ui:ScrollView name="historyScroll" style="height: auto; flex-direction: column;" />
         </ui:VisualElement>
-        <ui:VisualElement name="FrequencyController" style="flex-grow: 1; min-height: 100px;" />
+        <ui:VisualElement name="FrequencyController" style="flex-grow: 1; min-height: 100px;">
+            <ui:ScrollView name="frequencyScroll" style="height: auto; flex-direction: column;" />
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

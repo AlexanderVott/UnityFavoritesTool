@@ -1,16 +1,20 @@
 using System;
+using FavTool.Models;
 using UnityEngine.UIElements;
 
 namespace FavTool
 {
 	public class BaseController: IDisposable
 	{
-		protected VisualElement panel;
+		protected ProfileModel _profile;
+
+		protected VisualElement _panel;
 		protected string FilterValue { get; set; }
 
 		internal BaseController(VisualElement root)
 		{
-			panel = root.Q<VisualElement>(GetType().Name);
+			_profile = ProfileModel.Instance;
+			_panel = root.Q<VisualElement>(GetType().Name);
 			Hide();
 		}
 
@@ -23,7 +27,7 @@ namespace FavTool
 		public virtual void Dispose() { }
 		#endregion
 
-		internal void Hide() => panel.AddToClassList("hide");
-		internal void Show() => panel.RemoveFromClassList("hide");
+		internal void Hide() => _panel.AddToClassList("hide");
+		internal void Show() => _panel.RemoveFromClassList("hide");
 	}
 }
