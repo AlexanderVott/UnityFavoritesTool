@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,14 +11,12 @@ namespace FavTool
     internal class FavoritesController : BaseController
     {
 	    private ProfileModel profile;
-	    private VisualElement favPanel;
 	    private ScrollView favGroupsScroll;
 
-		internal FavoritesController(VisualElement panel) : base(panel)
+		internal FavoritesController(VisualElement root) : base(root)
 		{
-			favPanel = panel;
 			profile = ProfileModel.Instance;
-			favGroupsScroll = favPanel.Q<ScrollView>("favGroupsScroll");
+			favGroupsScroll = panel.Q<ScrollView>("favGroupsScroll");
 
 			foreach (var itrG in profile.Favorites.groups)
 				OnAddedGroup(itrG);
@@ -30,12 +27,12 @@ namespace FavTool
 		private void SubscribeEvents()
 		{
 			profile.Favorites.onAddedGroup += OnAddedGroup;
-			favPanel.RegisterCallback<DragExitedEvent>(AddDraggable);
+			panel.RegisterCallback<DragExitedEvent>(AddDraggable);
 		}
 
 		private void UnSubscribeEvents()
 		{
-			favPanel.UnregisterCallback<DragExitedEvent>(AddDraggable);
+			panel.UnregisterCallback<DragExitedEvent>(AddDraggable);
 			profile.Favorites.onAddedGroup -= OnAddedGroup;
 
 			foreach (var itr in favGroupsScroll.Children())

@@ -4,10 +4,8 @@ namespace FavTool
 {
     public class HistoryController : BaseController
     {
-	    internal HistoryController(VisualElement panel) : base(panel)
+	    internal HistoryController(VisualElement root) : base(root)
 	    {
 	    }
-
-
     }
 }

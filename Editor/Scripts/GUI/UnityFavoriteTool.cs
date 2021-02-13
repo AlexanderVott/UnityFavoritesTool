@@ -10,20 +10,11 @@ namespace FavTool.GUI
 	    private ProfileModel profile;
 		private VisualElement root;
 
-		private VisualElement favoritesPanel;
-		private VisualElement historyPanel;
-		private VisualElement frequencyPanel;
-
 		private BaseController currentController;
-
-		private FavoritesController favController;
-		private HistoryController histController;
-		private FrequencyController freqController;
-
-		private VisualElement tab1;
-		private VisualElement tab2;
-		private VisualElement tab3;
-
+		
+		private BaseController[] controllers = new BaseController[3];
+		private VisualElement[] tabs = new VisualElement[3];
+		
 		private string filter;
 
 		private readonly string SelectedClassUSS = "selected_tab";
@@ -49,67 +40,43 @@ namespace FavTool.GUI
 
 	    void OnDisable()
 	    {
-		    favController.Dispose();
-		    histController.Dispose();
-		    freqController.Dispose();
+			foreach (var itr in controllers)
+				itr?.Dispose();
 	    }
 
 	    private void PrepareWindow()
 	    {
-		    favoritesPanel = root.Q<VisualElement>("favoritesPanel");
-		    historyPanel   = root.Q<VisualElement>("historyPanel");
-		    frequencyPanel = root.Q<VisualElement>("frequencyPanel");
-
-		    favController = new FavoritesController(favoritesPanel);
-		    histController = new HistoryController(historyPanel);
-		    freqController = new FrequencyController(frequencyPanel);
+			controllers[0] = new FavoritesController(root);
+			controllers[1] = new HistoryController(root);
+			controllers[2] = new FrequencyController(root);
 
 			var filterField = root.Q<TextField>("filterField");
 			filterField.RegisterCallback<ChangeEvent<string>>(x => currentController?.Filter(x.newValue));
-
-			tab1 = root.Q<VisualElement>("tab1");
-			tab2 = root.Q<VisualElement>("tab2");
-			tab3 = root.Q<VisualElement>("tab3");
-			profile.onChangeState += (newValue, prefValue) => SwitchTabs(newValue);
-			tab1.RegisterCallback<ClickEvent>(x => profile.State = ProfileModel.ModeState.Favorites);
-			tab2.RegisterCallback<ClickEvent>(x => profile.State = ProfileModel.ModeState.History);
-			tab3.RegisterCallback<ClickEvent>(x => profile.State = ProfileModel.ModeState.Frequency);
 			
-			SwitchTabs(profile.State);
+			tabs[0] = root.Q<VisualElement>("tab1");
+			tabs[1] = root.Q<VisualElement>("tab2");
+			tabs[2] = root.Q<VisualElement>("tab3");
+			profile.onChangeState += SwitchTabs;
+			tabs[0].RegisterCallback<ClickEvent>(x => profile.State = ProfileModel.ModeState.Favorites);
+			tabs[1].RegisterCallback<ClickEvent>(x => profile.State = ProfileModel.ModeState.History);
+			tabs[2].RegisterCallback<ClickEvent>(x => profile.State = ProfileModel.ModeState.Frequency);
+			
+			SwitchTabs(profile.State, ProfileModel.ModeState.Favorites);
 	    }
 
-	    private void HidePanel(VisualElement panel) => panel.AddToClassList("hide");
-		private void ShowPanel(VisualElement panel) => panel.RemoveFromClassList("hide");
-
-	    private void SwitchTabs(ProfileModel.ModeState state)
+	    private void SwitchTabs(ProfileModel.ModeState newState, ProfileModel.ModeState prevState)
 	    {
-		    HidePanel(favoritesPanel);
-		    HidePanel(historyPanel);
-		    HidePanel(frequencyPanel);
+		    currentController?.Hide();
 
-		    tab1.RemoveFromClassList(SelectedClassUSS);
-		    tab2.RemoveFromClassList(SelectedClassUSS);
-		    tab3.RemoveFromClassList(SelectedClassUSS);
-		    currentController = null;
-		    switch (state)
+			tabs[(int)prevState].RemoveFromClassList(SelectedClassUSS);
+			tabs[(int)newState].AddToClassList(SelectedClassUSS);
+			currentController = controllers[(int) newState];
+			
+			if (currentController != null)
 		    {
-			    case ProfileModel.ModeState.Favorites:
-				    ShowPanel(favoritesPanel);
-				    tab1.AddToClassList(SelectedClassUSS);
-				    currentController = favController;
-				    break;
-			    case ProfileModel.ModeState.History:
-				    ShowPanel(historyPanel);
-				    tab2.AddToClassList(SelectedClassUSS);
-				    currentController = histController;
-				    break;
-			    case ProfileModel.ModeState.Frequency:
-				    ShowPanel(frequencyPanel);
-				    tab3.AddToClassList(SelectedClassUSS);
-				    currentController = freqController;
-				    break;
-		    }
-			currentController?.Filter(filter);
+			    currentController.Filter(filter);
+			    currentController.Show();
+			}
 	    }
     }
 }

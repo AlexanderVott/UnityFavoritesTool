@@ -4,7 +4,7 @@ namespace FavTool
 {
     public class FrequencyController : BaseController
     {
-	    internal FrequencyController(VisualElement panel) : base(panel)
+	    internal FrequencyController(VisualElement root) : base(root)
 	    {
 	    }
     }
