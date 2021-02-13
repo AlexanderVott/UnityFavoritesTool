@@ -8,12 +8,12 @@
         <ui:VisualElement name="searchPanel" touch-scroll-type="Elastic" style="height: 24px; flex-shrink: 0; flex-grow: 0; min-height: auto; flex-basis: 24px;">
             <ui:TextField picking-mode="Ignore" label="Filter" multiline="false" name="filterField" style="align-items: stretch; justify-content: flex-start; flex-direction: row; flex-wrap: nowrap; height: auto;" />
         </ui:VisualElement>
-        <ui:VisualElement name="FavoritesController" style="justify-content: flex-start;">
-            <ui:ScrollView name="favGroupsScroll" style="height: auto; flex-direction: column;" />
+        <ui:VisualElement name="FavoritesController" style="justify-content: flex-start; max-height: none; flex-grow: 1; min-height: 100px;">
+            <ui:ScrollView name="favGroupsScroll" style="height: auto; flex-direction: column; flex-grow: 1;" />
         </ui:VisualElement>
-        <ui:VisualElement name="HistoryController">
+        <ui:VisualElement name="HistoryController" style="min-height: 100px;">
             <ui:ScrollView name="groupsScroll" style="height: auto; flex-direction: column;" />
         </ui:VisualElement>
-        <ui:VisualElement name="FrequencyController" />
+        <ui:VisualElement name="FrequencyController" style="flex-grow: 1; min-height: 100px;" />
     </ui:VisualElement>
 </ui:UXML>

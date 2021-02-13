@@ -55,7 +55,7 @@ namespace FavTool
 
 		private void AddDraggable(DragExitedEvent e)
 		{
-			if (!string.IsNullOrEmpty(FilterValue))
+			if (string.IsNullOrEmpty(FilterValue))
 			{
 				foreach (var itr in DragAndDrop.paths)
 					_profile.AddFavorite(ToolUtils.GetGuidByPath(itr), itr);
