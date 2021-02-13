@@ -16,6 +16,9 @@ namespace FavTool
 
 		internal virtual void Filter(string filterParam) => FilterValue = filterParam;
 
+		protected virtual void SubscribeEvents() { }
+		protected virtual void UnSubscribeEvents() { }
+
 		#region IDisposable
 		public virtual void Dispose() { }
 		#endregion

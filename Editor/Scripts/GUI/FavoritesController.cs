@@ -10,32 +10,32 @@ namespace FavTool
 {
     internal class FavoritesController : BaseController
     {
-	    private ProfileModel profile;
-	    private ScrollView favGroupsScroll;
+	    private ProfileModel _profile;
+	    private ScrollView _favGroupsScroll;
 
 		internal FavoritesController(VisualElement root) : base(root)
 		{
-			profile = ProfileModel.Instance;
-			favGroupsScroll = panel.Q<ScrollView>("favGroupsScroll");
+			_profile = ProfileModel.Instance;
+			_favGroupsScroll = panel.Q<ScrollView>("favGroupsScroll");
 
-			foreach (var itrG in profile.Favorites.groups)
+			foreach (var itrG in _profile.Favorites.groups)
 				OnAddedGroup(itrG);
 
 			SubscribeEvents();
 		}
 
-		private void SubscribeEvents()
+		protected override void SubscribeEvents()
 		{
-			profile.Favorites.onAddedGroup += OnAddedGroup;
+			_profile.Favorites.onAddedGroup += OnAddedGroup;
 			panel.RegisterCallback<DragExitedEvent>(AddDraggable);
 		}
 
-		private void UnSubscribeEvents()
+		protected override void UnSubscribeEvents()
 		{
 			panel.UnregisterCallback<DragExitedEvent>(AddDraggable);
-			profile.Favorites.onAddedGroup -= OnAddedGroup;
+			_profile.Favorites.onAddedGroup -= OnAddedGroup;
 
-			foreach (var itr in favGroupsScroll.Children())
+			foreach (var itr in _favGroupsScroll.Children())
 				if (itr is GroupVisual group)
 					group.UnsubscribeEvents();
 		}
@@ -47,10 +47,10 @@ namespace FavTool
 			    var filteredItems = FilterGuids(@group.favoriteGUIDs);
 			    if (filteredItems.Count == 0)
 				    return;
-			    favGroupsScroll.Add(new GroupVisual(@group, filteredItems));
+			    _favGroupsScroll.Add(new GroupVisual(@group, filteredItems));
 		    }
 		    else
-			    favGroupsScroll.Add(new GroupVisual(@group));
+			    _favGroupsScroll.Add(new GroupVisual(@group));
 		}
 
 		private void AddDraggable(DragExitedEvent e)
@@ -58,24 +58,24 @@ namespace FavTool
 			if (!string.IsNullOrEmpty(FilterValue))
 			{
 				foreach (var itr in DragAndDrop.paths)
-					profile.AddFavorite(ToolUtils.GetGuidByPath(itr), itr);
+					_profile.AddFavorite(ToolUtils.GetGuidByPath(itr), itr);
 			}
 			else
 			{
 				foreach (var itr in DragAndDrop.paths)
 					if (Path.GetFileNameWithoutExtension(itr).Contains(FilterValue))
-						profile.AddFavorite(ToolUtils.GetGuidByPath(itr), itr);
+						_profile.AddFavorite(ToolUtils.GetGuidByPath(itr), itr);
 			}
 		}
 
 		internal void ClearVisual()
 		{
-			favGroupsScroll.Clear();
+			_favGroupsScroll.Clear();
 		}
 
 		internal void CleanGroups()
 		{
-			foreach (var itr in favGroupsScroll.Children().Select(x => x as GroupVisual))
+			foreach (var itr in _favGroupsScroll.Children().Select(x => x as GroupVisual))
 			{
 				if (itr == null)
 					continue;
@@ -100,7 +100,7 @@ namespace FavTool
 		{
 			FilterValue = filterParam;
 			ClearVisual();
-			foreach (var itrG in profile.Favorites.groups)
+			foreach (var itrG in _profile.Favorites.groups)
 				OnAddedGroup(itrG);
 			CleanGroups();
 		}

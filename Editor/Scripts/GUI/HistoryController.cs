@@ -7,5 +7,10 @@ namespace FavTool
 	    internal HistoryController(VisualElement root) : base(root)
 	    {
 	    }
-    }
+
+	    internal override void Filter(string filterParam)
+	    {
+		    base.Filter(filterParam);
+	    }
+	}
 }

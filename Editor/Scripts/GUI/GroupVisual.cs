@@ -7,11 +7,11 @@ namespace FavTool.GUI
 {
 	internal class GroupVisual : VisualElement
     {
-	    private FavoritesGroupModel data;
+	    private FavoritesGroupModel _data;
 
-	    private VisualElement groupContent;
+	    private VisualElement _groupContent;
 
-	    private readonly Dictionary<string, ItemVisual> items = new Dictionary<string, ItemVisual>();
+	    private readonly Dictionary<string, ItemVisual> _items = new Dictionary<string, ItemVisual>();
 
 	    internal GroupVisual(FavoritesGroupModel group) : base()
 	    {
@@ -29,7 +29,7 @@ namespace FavTool.GUI
 	    {
 		    const string UEngineName = "UnityEngine.";
 
-		    this.data = group;
+		    this._data = group;
 		    var template = Resources.Load<VisualTreeAsset>("GroupItem");
 		    template.CloneTree(this);
 
@@ -42,7 +42,7 @@ namespace FavTool.GUI
 		    var bg = Background.FromTexture2D(@group.icon.ToTexture2D());
 		    texture.style.backgroundImage = bg;
 
-		    groupContent = this.Q<VisualElement>("groupContent");
+		    _groupContent = this.Q<VisualElement>("groupContent");
 
 		    InitializeItems(guids != null ? guids : group.favoriteGUIDs);
 	    }
@@ -55,34 +55,34 @@ namespace FavTool.GUI
 
 		internal void SubscribeEvents()
 	    {
-		    data.onAdded += OnAddedItem;
-		    data.onRemoved += OnRemovedItem;
+		    _data.onAdded += OnAddedItem;
+		    _data.onRemoved += OnRemovedItem;
 	    }
 
 	    internal void UnsubscribeEvents()
 	    {
-		    data.onAdded -= OnAddedItem;
-		    data.onRemoved -= OnRemovedItem;
-		    items.Clear();
+		    _data.onAdded -= OnAddedItem;
+		    _data.onRemoved -= OnRemovedItem;
+		    _items.Clear();
 	    }
 
 	    private void OnAddedItem(string guid)
 	    {
-		    items.Add(guid, new ItemVisual(data, guid));
-			groupContent.Add(items[guid]);
+		    _items.Add(guid, new ItemVisual(_data, guid));
+			_groupContent.Add(_items[guid]);
 	    }
 
 	    private void OnRemovedItem(string guid)
 	    {
-			items[guid].RemoveFromHierarchy();
-			items.Remove(guid);
+			_items[guid].RemoveFromHierarchy();
+			_items.Remove(guid);
 			ProfileModel.Instance.CleanFavorites();
 			Clean();
 	    }
 
 		internal void Clean()
 		{
-			if (groupContent.childCount == 0) 
+			if (_groupContent.childCount == 0) 
 				RemoveFromHierarchy();
 		}
 	}

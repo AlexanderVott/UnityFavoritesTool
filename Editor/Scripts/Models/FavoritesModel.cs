@@ -12,8 +12,8 @@ namespace FavTool.Models
     [Serializable]
     internal class FavoritesModel
     {
-        [SerializeField] private List<FavoritesGroupModel> m_groups = new List<FavoritesGroupModel>();
-        internal List<FavoritesGroupModel> groups => m_groups;
+        [SerializeField] private List<FavoritesGroupModel> _groups = new List<FavoritesGroupModel>();
+        internal List<FavoritesGroupModel> groups => _groups;
 
 		internal bool IsDirty { get; set; }
 
@@ -44,14 +44,14 @@ namespace FavTool.Models
 			if (!ContainsGroup(typeName))
 			{
 				var group = new FavoritesGroupModel(typeName, icon, new[] {guid});
-				m_groups.Add(group);
+				_groups.Add(group);
 				Sort();
 				IsDirty = true;
 				onAddedGroup?.Invoke(group);
 			}
 			else
 			{
-				var group = m_groups.Find(itr => itr.key == typeName);
+				var group = _groups.Find(itr => itr.key == typeName);
 				if (!group.ContainsGuid(guid))
 				{
 					group.Add(guid);
@@ -95,19 +95,19 @@ namespace FavTool.Models
 			return AssetDatabase.GetAssetPath(prefabRef != null ? prefabRef : obj);
 		}
 
-		internal bool ContainsGroup(string typeName) => m_groups.Exists(itr => itr.key == typeName);
+		internal bool ContainsGroup(string typeName) => _groups.Exists(itr => itr.key == typeName);
 		
-		internal bool Contains(string guid) => m_groups.Any(@group => @group.ContainsGuid(guid));
+		internal bool Contains(string guid) => _groups.Any(@group => @group.ContainsGuid(guid));
 
 		internal void Sort()
 		{
-			m_groups = m_groups.OrderByDescending(itr => itr.key).ToList();
+			_groups = _groups.OrderByDescending(itr => itr.key).ToList();
 		}
 
 		internal void Clean()
 		{
 			var markedToRemoveGroups = new List<FavoritesGroupModel>();
-			foreach (var itr in m_groups)
+			foreach (var itr in _groups)
 			{
 				var markedToRemoveGUIDs = new List<string>();
 				foreach (var guid in itr.favoriteGUIDs)
@@ -130,7 +130,7 @@ namespace FavTool.Models
 
 			foreach (var itr in markedToRemoveGroups)
 			{
-				m_groups.Remove(itr);
+				_groups.Remove(itr);
 				onRemovedGroup?.Invoke(itr);
 			}
 

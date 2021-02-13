@@ -7,17 +7,17 @@ namespace FavTool.GUI
 {
     public class UnityFavoriteTool : EditorWindow
     {
-	    private ProfileModel profile;
-		private VisualElement root;
+	    private ProfileModel _profile;
+		private VisualElement _root;
 
-		private BaseController currentController;
+		private BaseController _currentController;
 		
-		private BaseController[] controllers = new BaseController[3];
-		private VisualElement[] tabs = new VisualElement[3];
+		private readonly BaseController[] _controllers = new BaseController[3];
+		private readonly VisualElement[] _tabs = new VisualElement[3];
 		
-		private string filter;
+		private string _filter;
 
-		private readonly string SelectedClassUSS = "selected_tab";
+		private const string SelectedClassUSS = "selected_tab";
 
 		[MenuItem("Window/Show favorites window _%#T")]
 	    public static void ShowFavoriteWindow()
@@ -29,53 +29,53 @@ namespace FavTool.GUI
 
 	    void OnEnable()
 	    {
-		    profile = ProfileModel.Instance;
-		    root = rootVisualElement;
-		    root.styleSheets.Add(Resources.Load<StyleSheet>("WindowStyleSheet"));
+		    _profile = ProfileModel.Instance;
+		    _root = rootVisualElement;
+		    _root.styleSheets.Add(Resources.Load<StyleSheet>("WindowStyleSheet"));
 			var windowTree = Resources.Load<VisualTreeAsset>("Window");
-		    windowTree.CloneTree(root);
+		    windowTree.CloneTree(_root);
 
 		    PrepareWindow();
 	    }
 
 	    void OnDisable()
 	    {
-			foreach (var itr in controllers)
+			foreach (var itr in _controllers)
 				itr?.Dispose();
 	    }
 
 	    private void PrepareWindow()
 	    {
-			controllers[0] = new FavoritesController(root);
-			controllers[1] = new HistoryController(root);
-			controllers[2] = new FrequencyController(root);
+			_controllers[0] = new FavoritesController(_root);
+			_controllers[1] = new HistoryController(_root);
+			_controllers[2] = new FrequencyController(_root);
 
-			var filterField = root.Q<TextField>("filterField");
-			filterField.RegisterCallback<ChangeEvent<string>>(x => currentController?.Filter(x.newValue));
+			var filterField = _root.Q<TextField>("filterField");
+			filterField.RegisterCallback<ChangeEvent<string>>(x => _currentController?.Filter(x.newValue));
 			
-			tabs[0] = root.Q<VisualElement>("tab1");
-			tabs[1] = root.Q<VisualElement>("tab2");
-			tabs[2] = root.Q<VisualElement>("tab3");
-			profile.onChangeState += SwitchTabs;
-			tabs[0].RegisterCallback<ClickEvent>(x => profile.State = ProfileModel.ModeState.Favorites);
-			tabs[1].RegisterCallback<ClickEvent>(x => profile.State = ProfileModel.ModeState.History);
-			tabs[2].RegisterCallback<ClickEvent>(x => profile.State = ProfileModel.ModeState.Frequency);
+			_tabs[0] = _root.Q<VisualElement>("tab1");
+			_tabs[1] = _root.Q<VisualElement>("tab2");
+			_tabs[2] = _root.Q<VisualElement>("tab3");
+			_profile.onChangeState += SwitchTabs;
+			_tabs[0].RegisterCallback<ClickEvent>(x => _profile.State = ProfileModel.ModeState.Favorites);
+			_tabs[1].RegisterCallback<ClickEvent>(x => _profile.State = ProfileModel.ModeState.History);
+			_tabs[2].RegisterCallback<ClickEvent>(x => _profile.State = ProfileModel.ModeState.Frequency);
 			
-			SwitchTabs(profile.State, ProfileModel.ModeState.Favorites);
+			SwitchTabs(_profile.State, ProfileModel.ModeState.Favorites);
 	    }
 
 	    private void SwitchTabs(ProfileModel.ModeState newState, ProfileModel.ModeState prevState)
 	    {
-		    currentController?.Hide();
+		    _currentController?.Hide();
 
-			tabs[(int)prevState].RemoveFromClassList(SelectedClassUSS);
-			tabs[(int)newState].AddToClassList(SelectedClassUSS);
-			currentController = controllers[(int) newState];
+			_tabs[(int)prevState].RemoveFromClassList(SelectedClassUSS);
+			_tabs[(int)newState].AddToClassList(SelectedClassUSS);
+			_currentController = _controllers[(int) newState];
 			
-			if (currentController != null)
+			if (_currentController != null)
 		    {
-			    currentController.Filter(filter);
-			    currentController.Show();
+			    _currentController.Filter(_filter);
+			    _currentController.Show();
 			}
 	    }
     }

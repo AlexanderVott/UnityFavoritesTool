@@ -16,34 +16,34 @@ namespace FavTool.Models
 			Frequency
 		}
 
-		[SerializeField] private ModeState state = ModeState.Favorites;
+		[SerializeField] private ModeState _state = ModeState.Favorites;
 		internal ModeState State
 		{
-			get => state;
+			get => _state;
 			set
 			{
-				var oldState = state;
-				state = value;
-				onChangeState?.Invoke(state, oldState);
+				var oldState = _state;
+				_state = value;
+				onChangeState?.Invoke(_state, oldState);
 			}
 		}
 
 		internal event Action<ModeState, ModeState> onChangeState;
 
-		[SerializeField] private FavoritesModel m_favorites = new FavoritesModel();
-	    internal FavoritesModel Favorites => m_favorites;
+		[SerializeField] private FavoritesModel _favorites = new FavoritesModel();
+	    internal FavoritesModel Favorites => _favorites;
 
-	    private static ProfileModel m_instance;
+	    private static ProfileModel _instance;
 		internal static ProfileModel Instance
 	    {
 		    get
 		    {
-			    if (!m_instance)
+			    if (!_instance)
 			    {
-				    m_instance = Initialize();
+				    _instance = Initialize();
 			    }
 
-			    return m_instance;
+			    return _instance;
 		    }
 	    }
 
@@ -102,44 +102,44 @@ namespace FavTool.Models
 
 	    internal void AddFavorite(Object obj)
 	    {
-			m_favorites.Add(obj);
+			_favorites.Add(obj);
 			SerializeFavorites();
 	    }
 
 		internal void AddFavorite(string guid, string path)
 		{
-			m_favorites.Add(guid, path);
+			_favorites.Add(guid, path);
 			SerializeFavorites();
 		}
 
 	    internal void RemoveFavorite(string guid)
 	    {
-			m_favorites.Remove(guid);
+			_favorites.Remove(guid);
 			SerializeFavorites();
 	    }
 
 	    internal void ToggleFavorite(Object obj)
 	    {
-			m_favorites.Toggle(obj);
+			_favorites.Toggle(obj);
 			SerializeFavorites();
 	    }
 
-	    internal bool ContainsFavorite(string guid) => m_favorites.Contains(guid);
+	    internal bool ContainsFavorite(string guid) => _favorites.Contains(guid);
 
 	    internal void CleanFavorites()
 	    {
-		    m_favorites.Clean();
+		    _favorites.Clean();
 		    SerializeFavorites();
 	    }
 
 	    private void SerializeFavorites()
 	    {
-			if (!m_favorites.IsDirty)
+			if (!_favorites.IsDirty)
 				return;
 
 			EditorUtility.SetDirty(this);
 			AssetDatabase.SaveAssets();
-			m_favorites.IsDirty = false;
+			_favorites.IsDirty = false;
 		}
     }
 }
