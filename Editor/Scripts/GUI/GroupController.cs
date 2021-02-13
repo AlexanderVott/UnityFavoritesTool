@@ -73,9 +73,6 @@ namespace FavTool
 				Destroy();
 		}
 
-		internal void Destroy()
-		{
-			_visual.RemoveFromHierarchy();
-		}
+		internal void Destroy() => _visual.RemoveFromHierarchy();
 	}
 }

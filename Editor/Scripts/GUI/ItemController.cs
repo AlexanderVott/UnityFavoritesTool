@@ -18,6 +18,12 @@ namespace FavTool
 			_data = item;
 			_guid = guid;
 		    _visual = new ItemVisual(item, guid);
+			
+		    var preview = ToolUtils.GetPreviewAsset(ToolUtils.GetAssetByGuid<Object>(guid));
+		    if (preview == null) 
+			    preview = ToolUtils.GetThumbnailAsset(ToolUtils.GetAssetByGuid<Object>(guid));
+		    _visual.SetIcon(preview);
+
 			_visual.Field.value = ToolUtils.GetAssetByGuid<Object>(_guid);
 			_visual.Field.RegisterCallback<ChangeEvent<Object>>(e =>
 			{
@@ -28,9 +34,6 @@ namespace FavTool
 			_visual.BtnDelete.clickable.clicked += () => _data.Remove(this._guid);
 		}
 
-		internal void Destroy()
-		{
-			_visual.RemoveFromHierarchy();
-		}
+		internal void Destroy() => _visual.RemoveFromHierarchy();
     }
 }

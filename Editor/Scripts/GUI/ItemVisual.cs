@@ -15,8 +15,8 @@ namespace FavTool.GUI
 
 	    private Button _btnDelete;
 	    public Button BtnDelete => _btnDelete;
-		
-	    internal ItemVisual(FavoritesGroupModel item, string guid) => Initialize(item, guid);
+
+		internal ItemVisual(FavoritesGroupModel item, string guid) => Initialize(item, guid);
 
 	    private void Initialize(FavoritesGroupModel item, string guid)
 	    {
@@ -24,13 +24,6 @@ namespace FavTool.GUI
 		    template.CloneTree(this);
 
 		    _icon = this.Q<VisualElement>("iconItem");
-		    var preview = ToolUtils.GetPreviewAsset(ToolUtils.GetAssetByGuid<Object>(guid));
-		    if (preview == null)
-		    {
-			    preview = ToolUtils.GetThumbnailAsset(ToolUtils.GetAssetByGuid<Object>(guid));
-		    }
-		    var bg = Background.FromTexture2D(preview);
-			_icon.style.backgroundImage = bg;
 
 		    _field = this.Q<ObjectField>("groupItem");
 		    _field.allowSceneObjects = false;
@@ -38,6 +31,11 @@ namespace FavTool.GUI
 		    
 		    _btnDelete = this.Q<Button>("btnDelete");
 		    
+	    }
+
+	    internal void SetIcon(Texture2D texture)
+	    {
+		    _icon.style.backgroundImage = Background.FromTexture2D(texture);
 	    }
     }
 }

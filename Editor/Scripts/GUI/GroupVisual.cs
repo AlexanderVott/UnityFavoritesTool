@@ -30,10 +30,7 @@ namespace FavTool.GUI
 		    _groupContent = this.Q<VisualElement>("groupContent");
 	    }
 
-		internal void SetBackground(Texture2D texture)
-		{
-			var bg = Background.FromTexture2D(texture);
-			_background.style.backgroundImage = bg;
-		}
+		internal void SetBackground(Texture2D texture) => 
+			_background.style.backgroundImage = Background.FromTexture2D(texture);
 	}
 }
