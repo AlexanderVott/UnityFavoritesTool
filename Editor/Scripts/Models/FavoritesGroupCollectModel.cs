@@ -8,7 +8,7 @@ using UnityEngine;
 namespace FavTool.Models
 {
     [Serializable]
-    internal class FavoritesGroupModel
+    internal class FavoritesGroupCollectModel: ICollectModel
     {
 	    [SerializeField] protected string _key;
 	    internal string key => _key;
@@ -24,30 +24,35 @@ namespace FavTool.Models
         internal event Action<string> onAdded;
         internal event Action<string> onRemoved;
 
-        internal FavoritesGroupModel(string keyParam, Texture iconParam)
+        internal FavoritesGroupCollectModel(string keyParam, Texture iconParam)
         {
 	        _key = keyParam;
 	        _icon = iconParam;
         }
-        internal FavoritesGroupModel(string keyParam, Texture iconParam, string[] guids)
+        internal FavoritesGroupCollectModel(string keyParam, Texture iconParam, string[] guids)
         {
 	        _key = keyParam;
 	        _icon = iconParam;
             _favoriteGUIDs.AddRange(guids);
         }
 
-        internal void Add(string guid)
+        public void Add(string guid)
         {
 			_favoriteGUIDs.Add(guid);
 			Sort();
 			onAdded?.Invoke(guid);
         }
 
-        internal void Remove(string guid)
+        public void Remove(string guid)
         {
-	        _favoriteGUIDs.Remove(guid);
+			_favoriteGUIDs.Remove(guid);
 	        Sort();
-            onRemoved?.Invoke(guid);
+	        onRemoved?.Invoke(guid);
+        }
+
+        void ICollectModel.Clear()
+        {
+	        _favoriteGUIDs.Clear();
         }
 
         internal void Sort()

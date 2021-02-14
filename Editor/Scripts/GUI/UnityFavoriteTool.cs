@@ -1,5 +1,6 @@
 using FavTool.Models;
 using UnityEditor;
+using UnityEditor.Callbacks;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -74,9 +75,17 @@ namespace FavTool.GUI
 			
 			if (_currentController != null)
 		    {
-			    _currentController.Filter(_filter);
 			    _currentController.Show();
+			    _currentController.Filter(_filter);
 			}
 	    }
+
+		[OnOpenAsset(1)]
+		public static bool OnOpenAsset(int instanceId, int line)
+		{
+			ProfileModel.Instance.AddHistory(EditorUtility.InstanceIDToObject(instanceId));
+
+			return false;
+		}
     }
 }

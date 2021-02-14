@@ -14,7 +14,6 @@ namespace FavTool
 
 		internal FavoritesController(VisualElement root) : base(root)
 		{
-			_profile = ProfileModel.Instance;
 			_favGroupsScroll = _panel.Q<ScrollView>("favGroupsScroll");
 
 			foreach (var itrG in _profile.Favorites.groups)
@@ -38,7 +37,7 @@ namespace FavTool
 				itr.UnsubscribeEvents();
 		}
 
-		private void OnAddedGroup(FavoritesGroupModel group)
+		private void OnAddedGroup(FavoritesGroupCollectModel group)
 	    {
 		    if (!string.IsNullOrEmpty(FilterValue))
 		    {
@@ -106,11 +105,6 @@ namespace FavTool
 			foreach (var itrG in _profile.Favorites.groups)
 				OnAddedGroup(itrG);
 			CleanGroups();
-		}
-
-		public override void Dispose()
-		{
-			UnSubscribeEvents();
 		}
     }
 }

@@ -1,15 +1,15 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
     <ui:VisualElement style="height: 428px;">
-        <ui:VisualElement name="tabs" style="flex-direction: row; flex-wrap: wrap;">
-            <ui:Button text="Tab1" display-tooltip-when-elided="true" name="tab1" />
-            <ui:Button text="Tab2" display-tooltip-when-elided="true" name="tab2" />
-            <ui:Button text="Tab3" display-tooltip-when-elided="true" name="tab3" />
+        <ui:VisualElement name="tabs" style="flex-direction: row; flex-wrap: wrap; min-height: 18px;">
+            <ui:Button text="Favorites" display-tooltip-when-elided="true" name="tab1" />
+            <ui:Button text="History" display-tooltip-when-elided="true" name="tab2" />
+            <ui:Button text="Frequency" display-tooltip-when-elided="true" name="tab3" />
         </ui:VisualElement>
         <ui:VisualElement name="searchPanel" touch-scroll-type="Elastic" style="height: 24px; flex-shrink: 0; flex-grow: 0; min-height: auto; flex-basis: 24px;">
             <ui:TextField picking-mode="Ignore" label="Filter" multiline="false" name="filterField" style="align-items: stretch; justify-content: flex-start; flex-direction: row; flex-wrap: nowrap; height: auto;" />
         </ui:VisualElement>
-        <ui:VisualElement name="FavoritesController" style="justify-content: flex-start; max-height: none; flex-grow: 1; min-height: 100px;">
-            <ui:ScrollView name="favGroupsScroll" style="height: auto; flex-direction: column; flex-grow: 1;" />
+        <ui:VisualElement name="FavoritesController" style="justify-content: space-around; max-height: none; flex-grow: 1; min-height: auto; height: auto; flex-shrink: 1;">
+            <ui:ScrollView name="favGroupsScroll" show-vertical-scroller="true" style="height: auto; flex-direction: column; flex-grow: 1;" />
         </ui:VisualElement>
         <ui:VisualElement name="HistoryController" style="min-height: 100px;">
             <ui:ScrollView name="historyScroll" style="height: auto; flex-direction: column;" />

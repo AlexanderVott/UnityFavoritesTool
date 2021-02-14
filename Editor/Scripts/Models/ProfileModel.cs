@@ -33,18 +33,16 @@ namespace FavTool.Models
 		[SerializeField] private FavoritesModel _favorites = new FavoritesModel();
 	    internal FavoritesModel Favorites => _favorites;
 
-	    [SerializeField] private HistoryModel _history = new HistoryModel();
-	    internal HistoryModel History => _history;
+	    [SerializeField] private HistoryCollectModel _history = new HistoryCollectModel();
+	    internal HistoryCollectModel History => _history;
 
 	    private static ProfileModel _instance;
 		internal static ProfileModel Instance
 	    {
 		    get
 		    {
-			    if (!_instance)
-			    {
+			    if (!_instance) 
 				    _instance = Initialize();
-			    }
 
 			    return _instance;
 		    }
@@ -62,6 +60,9 @@ namespace FavTool.Models
 			{
 				return CreateNewProfile();
 			}
+
+			profile.CleanFavorites();
+			profile.CleanHistory();
 
 			return profile;
 	    }
@@ -108,7 +109,14 @@ namespace FavTool.Models
 		    var path = ToolUtils.GetPath(obj);
 		    var guid = ToolUtils.GetGuidByPath(path);
 			_history.Add(guid);
+			CleanHistory();
 	    }
+
+		internal void RemoveHistory(string guid)
+		{
+			_history.Remove(guid);
+			CleanHistory();
+		}
 
 	    internal void AddFavorite(Object obj)
 	    {
@@ -139,6 +147,12 @@ namespace FavTool.Models
 	    internal void CleanFavorites()
 	    {
 		    _favorites.Clean();
+		    SerializeFavorites();
+	    }
+
+	    internal void CleanHistory()
+	    {
+		    _history.Clean();
 		    SerializeFavorites();
 	    }
 

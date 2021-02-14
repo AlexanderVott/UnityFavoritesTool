@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace FavTool
+namespace FavTool.Models
 {
     [Serializable]
-    internal class HistoryModel
+    internal class HistoryCollectModel: ICollectModel
     {
 	    [SerializeField] private List<string> _history = new List<string>();
 	    internal List<string> History => _history;
@@ -17,7 +17,7 @@ namespace FavTool
 
         internal event Action onChangedHistory;
 
-        internal void Add(string guid)
+        public void Add(string guid)
         {
 			_history.Add(guid);
             if (_history.Count > _maxHistoryCount)
@@ -26,14 +26,25 @@ namespace FavTool
             onChangedHistory?.Invoke();
         }
 
-        internal void Remove(string guid)
+        public void Remove(string guid)
         {
 	        _history.Remove(guid);
 	        IsDirty = true;
             onChangedHistory?.Invoke();
+		}
+
+        internal void Clean()
+        {
+	        var indexes = new List<int>();
+	        for (int i = History.Count - 1; i >= 0; i--)
+		        if (String.IsNullOrEmpty(ToolUtils.GetPathByGuid(History[i])))
+			        indexes.Add(i);
+
+	        foreach (var index in indexes)
+		        History.RemoveAt(index);
         }
 
-        internal void Clear()
+		void ICollectModel.Clear()
         {
 	        _history.Clear();
 	        onChangedHistory?.Invoke();

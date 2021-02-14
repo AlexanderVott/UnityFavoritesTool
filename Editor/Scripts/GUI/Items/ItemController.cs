@@ -10,14 +10,14 @@ namespace FavTool
 	    private ItemVisual _visual;
 	    internal ItemVisual Visual => _visual;
 		
-	    private FavoritesGroupModel _data;
+	    private ICollectModel _data;
 	    private string _guid;
 
-		internal ItemController(FavoritesGroupModel item, string guid)
+		internal ItemController(ICollectModel item, string guid)
 		{
 			_data = item;
 			_guid = guid;
-		    _visual = new ItemVisual(item, guid);
+		    _visual = new ItemVisual(guid);
 			
 		    var preview = ToolUtils.GetPreviewAsset(ToolUtils.GetAssetByGuid<Object>(guid));
 		    if (preview == null) 

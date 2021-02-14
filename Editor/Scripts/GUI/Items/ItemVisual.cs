@@ -16,9 +16,9 @@ namespace FavTool.GUI
 	    private Button _btnDelete;
 	    public Button BtnDelete => _btnDelete;
 
-		internal ItemVisual(FavoritesGroupModel item, string guid) => Initialize(item, guid);
+		internal ItemVisual(string guid) => Initialize(guid);
 
-	    private void Initialize(FavoritesGroupModel item, string guid)
+	    private void Initialize(string guid)
 	    {
 		    var template = Resources.Load<VisualTreeAsset>("Item");
 		    template.CloneTree(this);

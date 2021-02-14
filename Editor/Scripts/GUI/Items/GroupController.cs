@@ -9,15 +9,15 @@ namespace FavTool
 		private GroupVisual _visual;
 		internal GroupVisual Visual => _visual;
 
-		private FavoritesGroupModel _data;
+		private FavoritesGroupCollectModel _data;
 
 		private readonly Dictionary<string, ItemController> _items = new Dictionary<string, ItemController>();
 
-		internal GroupController(FavoritesGroupModel group): this(group, null)
+		internal GroupController(FavoritesGroupCollectModel group): this(group, null)
 		{
 		}
 
-		internal GroupController(FavoritesGroupModel group, in List<string> guids)
+		internal GroupController(FavoritesGroupCollectModel group, in List<string> guids)
 		{
 			const string UEngineName = "UnityEngine.";
 

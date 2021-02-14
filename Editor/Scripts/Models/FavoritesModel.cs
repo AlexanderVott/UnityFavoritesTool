@@ -12,14 +12,14 @@ namespace FavTool.Models
     [Serializable]
     internal class FavoritesModel
     {
-        [SerializeField] private List<FavoritesGroupModel> _groups = new List<FavoritesGroupModel>();
-        internal List<FavoritesGroupModel> groups => _groups;
+        [SerializeField] private List<FavoritesGroupCollectModel> _groups = new List<FavoritesGroupCollectModel>();
+        internal List<FavoritesGroupCollectModel> groups => _groups;
 
 		internal bool IsDirty { get; set; }
 
-		internal event Action<FavoritesGroupModel> onAddedGroup;
-		internal event Action<FavoritesGroupModel> onRemovedGroup;
-		internal event Action<FavoritesGroupModel> onChangedGroups;
+		internal event Action<FavoritesGroupCollectModel> onAddedGroup;
+		internal event Action<FavoritesGroupCollectModel> onRemovedGroup;
+		internal event Action<FavoritesGroupCollectModel> onChangedGroups;
 
 		internal void Add(Object obj)
 		{
@@ -43,7 +43,7 @@ namespace FavTool.Models
 
 			if (!ContainsGroup(typeName))
 			{
-				var group = new FavoritesGroupModel(typeName, icon, new[] {guid});
+				var group = new FavoritesGroupCollectModel(typeName, icon, new[] {guid});
 				_groups.Add(group);
 				Sort();
 				IsDirty = true;
@@ -100,7 +100,7 @@ namespace FavTool.Models
 
 		internal void Clean()
 		{
-			var markedToRemoveGroups = new List<FavoritesGroupModel>();
+			var markedToRemoveGroups = new List<FavoritesGroupCollectModel>();
 			foreach (var itr in _groups)
 			{
 				var markedToRemoveGUIDs = new List<string>();
