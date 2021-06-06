@@ -8,7 +8,7 @@
         <ui:VisualElement name="searchPanel" touch-scroll-type="Elastic" style="height: 24px; flex-shrink: 0; flex-grow: 0; min-height: auto; flex-basis: 24px;">
             <ui:TextField picking-mode="Ignore" label="Filter" multiline="false" name="filterField" style="align-items: stretch; justify-content: flex-start; flex-direction: row; flex-wrap: nowrap; height: auto;" />
         </ui:VisualElement>
-        <ui:VisualElement name="FavoritesController" style="justify-content: space-around; max-height: none; flex-grow: 1; min-height: auto; height: auto; flex-shrink: 1;">
+        <ui:VisualElement name="FavoritesController" style="justify-content: space-around; max-height: none; flex-grow: 1; min-height: auto; height: auto; flex-shrink: 0;">
             <ui:ScrollView name="favGroupsScroll" show-vertical-scroller="true" style="height: auto; flex-direction: column; flex-grow: 1;" />
         </ui:VisualElement>
         <ui:VisualElement name="HistoryController" style="min-height: 100px;">
