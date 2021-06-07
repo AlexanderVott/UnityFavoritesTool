@@ -4,4 +4,6 @@
 
 .hide {
     display: none;
+    flex-grow: 0;
+    height: 0px;
 }
