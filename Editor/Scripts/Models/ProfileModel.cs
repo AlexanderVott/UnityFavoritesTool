@@ -36,6 +36,8 @@ namespace FavTool.Models
 	    [SerializeField] private HistoryCollectModel _history = new HistoryCollectModel();
 	    internal HistoryCollectModel History => _history;
 
+	    [SerializeField] private bool autoSaveProfileAsset = false;
+
 	    private static ProfileModel _instance;
 		internal static ProfileModel Instance
 	    {
@@ -162,7 +164,8 @@ namespace FavTool.Models
 				return;
 
 			EditorUtility.SetDirty(this);
-			AssetDatabase.SaveAssets();
+			if (autoSaveProfileAsset)
+				AssetDatabase.SaveAssets();
 			_favorites.IsDirty = false;
 		}
     }
