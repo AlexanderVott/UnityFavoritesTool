@@ -1,6 +1,6 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace FavTool
@@ -38,13 +38,16 @@ namespace FavTool
 
 		    Clear();
 
-		    var sortedHistory = _profile.History.History.ToList();
-		    sortedHistory.Reverse();
+			var sortedHistory = String.IsNullOrEmpty(FilterValue) 
+												? _profile.History.History.ToList() 
+												: ToolUtils.FilterGuids(_profile.History.History, FilterValue);
+
+			sortedHistory.Reverse();
 		    var groupedHistory = sortedHistory.GroupBy(x => x);
 
 		    foreach (var itr in groupedHistory.Select(x => x.Key))
 			    AddItem(itr);
-	    }
+		}
 
 	    private void AddItem(string guid)
 	    {

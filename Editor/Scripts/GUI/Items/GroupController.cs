@@ -61,8 +61,11 @@ namespace FavTool
 
 		private void OnRemovedItem(string guid)
 		{
-			_items[guid].Destroy();
-			_items.Remove(guid);
+			if (_items.ContainsKey(guid))
+			{
+				_items[guid].Destroy();
+				_items.Remove(guid);
+			}
 			ProfileModel.Instance.CleanFavorites();
 			Clean();
 		}

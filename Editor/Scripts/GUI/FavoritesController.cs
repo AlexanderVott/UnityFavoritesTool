@@ -41,7 +41,7 @@ namespace FavTool
 	    {
 		    if (!string.IsNullOrEmpty(FilterValue))
 		    {
-			    var filteredItems = FilterGuids(@group.favoriteGUIDs);
+			    var filteredItems = ToolUtils.FilterGuids(@group.favoriteGUIDs, FilterValue);
 			    if (filteredItems.Count == 0)
 				    return;
 			    _groups.Add(new GroupController(@group, filteredItems));
@@ -84,20 +84,7 @@ namespace FavTool
 				itr.Clean();
 			}
 		}
-		private List<string> FilterGuids(List<string> guids)
-		{
-			var result = new List<string>();
-			foreach (var itr in guids)
-			{
-				var name = Path.GetFileNameWithoutExtension(ToolUtils.GetPathByGuid(itr));
-				if (!name.Contains(FilterValue))
-					continue;
-				result.Add(itr);
-			}
-
-			return result;
-		}
-
+		
 		internal override void Filter(string filterParam)
 		{
 			FilterValue = filterParam;
