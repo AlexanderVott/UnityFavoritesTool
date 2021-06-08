@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 
 namespace FavTool
 {
+	[ControllerTemplate("BaseControllerTemplate")]
     internal class FavoritesController : BaseController
     {
 	    private ScrollView _favGroupsScroll;

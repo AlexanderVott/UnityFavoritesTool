@@ -1,5 +1,9 @@
 using System;
+using System.Linq;
+using System.Reflection;
 using FavTool.Models;
+using UnityEditor;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace FavTool
@@ -9,6 +13,8 @@ namespace FavTool
 		protected ProfileModel _profile;
 
 		protected VisualElement _panel;
+		internal VisualElement Panel => _panel;
+
 		protected string FilterValue { get; set; }
 
 		internal bool IsActive { get; private set; }
@@ -16,9 +22,20 @@ namespace FavTool
 		internal BaseController(VisualElement root)
 		{
 			_profile = ProfileModel.Instance;
-			_panel = root.Q<VisualElement>(GetType().Name);
+
+			var type = GetType();
+			var template = Resources.Load<VisualTreeAsset>(GetVisualAttribute(type).path);
+			_panel = template.CloneTree();
+			_panel.name = type.Name;
+			var visualRoot = root.Q<VisualElement>("visualRoot");
+			if (visualRoot == null)
+				visualRoot = root;
+			visualRoot.Add(_panel);
+
 			Hide();
 		}
+
+		private ControllerTemplateAttribute GetVisualAttribute(Type type) => type.GetCustomAttribute<ControllerTemplateAttribute>(true);
 
 		internal virtual void Filter(string filterParam) => FilterValue = filterParam;
 

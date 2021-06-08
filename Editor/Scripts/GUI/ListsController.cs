@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace FavTool
 {
-    public class ListsController : BaseController
+	[ControllerTemplate("ListsControllerTemplate")]
+	public class ListsController : BaseController
     {
 	    private ScrollView _listsScroll;
 

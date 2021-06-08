@@ -5,7 +5,8 @@ using UnityEngine.UIElements;
 
 namespace FavTool
 {
-    public class FrequencyController : BaseController
+	[ControllerTemplate("BaseControllerTemplate")]
+	public class FrequencyController : BaseController
     {
 	    private ScrollView _freqScroll;
 

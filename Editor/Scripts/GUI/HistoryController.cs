@@ -5,7 +5,8 @@ using UnityEngine.UIElements;
 
 namespace FavTool
 {
-    public class HistoryController : BaseController
+	[ControllerTemplate("BaseControllerTemplate")]
+	public class HistoryController : BaseController
     {
 	    private ScrollView _historyScroll;
 
