@@ -12,6 +12,7 @@ namespace FavTool.Models
 		internal enum ModeState
 		{
 			Favorites = 0,
+			Lists = 1,
 			History,
 			Frequency
 		}
@@ -31,33 +32,33 @@ namespace FavTool.Models
 		internal event Action<ModeState, ModeState> onChangeState;
 
 		[SerializeField] private FavoritesModel _favorites = new FavoritesModel();
-	    internal FavoritesModel Favorites => _favorites;
+		internal FavoritesModel Favorites => _favorites;
 
-	    [SerializeField] private HistoryCollectModel _history = new HistoryCollectModel();
-	    internal HistoryCollectModel History => _history;
+		[SerializeField] private HistoryCollectModel _history = new HistoryCollectModel();
+		internal HistoryCollectModel History => _history;
 
-	    [SerializeField] private bool autoSaveProfileAsset = false;
+		[SerializeField] private bool autoSaveProfileAsset = false;
 
-	    private static ProfileModel _instance;
+		private static ProfileModel _instance;
 		internal static ProfileModel Instance
-	    {
-		    get
-		    {
-			    if (!_instance) 
-				    _instance = Initialize();
+		{
+			get
+			{
+				if (!_instance)
+					_instance = Initialize();
 
-			    return _instance;
-		    }
-	    }
+				return _instance;
+			}
+		}
 
-	    private static ProfileModel Initialize()
-	    {
-		    var config = AssetDatabase.FindAssets("ProfileModel t:ProfileModel", null);
-		    ProfileModel profile = null;
-		    if (config.Length >= 1)
-		    {
-			    profile = ToolUtils.GetAssetByGuid<ProfileModel>(config[0]);
-		    }
+		private static ProfileModel Initialize()
+		{
+			var config = AssetDatabase.FindAssets("ProfileModel t:ProfileModel", null);
+			ProfileModel profile = null;
+			if (config.Length >= 1)
+			{
+				profile = ToolUtils.GetAssetByGuid<ProfileModel>(config[0]);
+			}
 			if (profile == null)
 			{
 				return CreateNewProfile();
@@ -67,52 +68,52 @@ namespace FavTool.Models
 			profile.CleanHistory();
 
 			return profile;
-	    }
+		}
 
-	    private static ProfileModel CreateNewProfile()
-	    {
-		    var result = ScriptableObject.CreateInstance<ProfileModel>();
+		private static ProfileModel CreateNewProfile()
+		{
+			var result = ScriptableObject.CreateInstance<ProfileModel>();
 
-		    var directory = GetDirectoryProfile();
+			var directory = GetDirectoryProfile();
 
-		    var finalAssetName = directory + "/ProfileModel.asset";
-		    string path = AssetDatabase.GenerateUniqueAssetPath(finalAssetName);
+			var finalAssetName = directory + "/ProfileModel.asset";
+			string path = AssetDatabase.GenerateUniqueAssetPath(finalAssetName);
 
 			AssetDatabase.CreateAsset(result, path);
 			AssetDatabase.SaveAssets();
 
 			return result;
-	    }
+		}
 
-	    private static string GetDirectoryProfile()
-	    {
+		private static string GetDirectoryProfile()
+		{
 			var directories = Directory.GetDirectories(Application.dataPath, "Editor", SearchOption.AllDirectories);
-		    var packageDir = directories.FirstOrDefault(itr => itr.Contains("UnityFavoriteTool-package"));
-		    if (String.IsNullOrEmpty(packageDir))
-		    {
-			    packageDir = Path.Combine(Application.dataPath, "FavoriteTool", "Editor", "Resources");
-		    }
+			var packageDir = directories.FirstOrDefault(itr => itr.Contains("UnityFavoriteTool-package"));
+			if (String.IsNullOrEmpty(packageDir))
+			{
+				packageDir = Path.Combine(Application.dataPath, "FavoriteTool", "Editor", "Resources");
+			}
 
-		    if (!Directory.Exists(packageDir))
-			    Directory.CreateDirectory(packageDir);
-		    packageDir = "Assets/" + packageDir.Substring(Application.dataPath.Length );
+			if (!Directory.Exists(packageDir))
+				Directory.CreateDirectory(packageDir);
+			packageDir = "Assets/" + packageDir.Substring(Application.dataPath.Length);
 
 			if (String.IsNullOrEmpty(packageDir))
-		    {
+			{
 				Debug.LogError($"Not found directory package");
 				return null;
-		    }
+			}
 
-		    return packageDir;
-	    }
+			return packageDir;
+		}
 
-	    internal void AddHistory(Object obj)
-	    {
-		    var path = ToolUtils.GetPath(obj);
-		    var guid = ToolUtils.GetGuidByPath(path);
+		internal void AddHistory(Object obj)
+		{
+			var path = ToolUtils.GetPath(obj);
+			var guid = ToolUtils.GetGuidByPath(path);
 			_history.Add(guid);
 			CleanHistory();
-	    }
+		}
 
 		internal void RemoveHistory(string guid)
 		{
@@ -120,11 +121,11 @@ namespace FavTool.Models
 			CleanHistory();
 		}
 
-	    internal void AddFavorite(Object obj)
-	    {
+		internal void AddFavorite(Object obj)
+		{
 			_favorites.Add(obj);
 			SerializeFavorites();
-	    }
+		}
 
 		internal void AddFavorite(string guid, string path)
 		{
@@ -132,34 +133,34 @@ namespace FavTool.Models
 			SerializeFavorites();
 		}
 
-	    internal void RemoveFavorite(string guid)
-	    {
+		internal void RemoveFavorite(string guid)
+		{
 			_favorites.Remove(guid);
 			SerializeFavorites();
-	    }
+		}
 
-	    internal void ToggleFavorite(Object obj)
-	    {
+		internal void ToggleFavorite(Object obj)
+		{
 			_favorites.Toggle(obj);
 			SerializeFavorites();
-	    }
+		}
 
-	    internal bool ContainsFavorite(string guid) => _favorites.Contains(guid);
+		internal bool ContainsFavorite(string guid) => _favorites.Contains(guid);
 
-	    internal void CleanFavorites()
-	    {
-		    _favorites.Clean();
-		    SerializeFavorites();
-	    }
+		internal void CleanFavorites()
+		{
+			_favorites.Clean();
+			SerializeFavorites();
+		}
 
-	    internal void CleanHistory()
-	    {
-		    _history.Clean();
-		    SerializeFavorites();
-	    }
+		internal void CleanHistory()
+		{
+			_history.Clean();
+			SerializeFavorites();
+		}
 
-	    private void SerializeFavorites()
-	    {
+		private void SerializeFavorites()
+		{
 			if (!_favorites.IsDirty)
 				return;
 
@@ -168,5 +169,5 @@ namespace FavTool.Models
 				AssetDatabase.SaveAssets();
 			_favorites.IsDirty = false;
 		}
-    }
+	}
 }

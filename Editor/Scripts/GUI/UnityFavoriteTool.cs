@@ -13,8 +13,8 @@ namespace FavTool.GUI
 
 		private BaseController _currentController;
 		
-		private readonly BaseController[] _controllers = new BaseController[3];
-		private readonly VisualElement[] _tabs = new VisualElement[3];
+		private readonly BaseController[] _controllers = new BaseController[4];
+		private readonly VisualElement[] _tabs = new VisualElement[4];
 		
 		private string _filter;
 
@@ -48,8 +48,9 @@ namespace FavTool.GUI
 	    private void PrepareWindow()
 	    {
 			_controllers[0] = new FavoritesController(_root);
-			_controllers[1] = new HistoryController(_root);
-			_controllers[2] = new FrequencyController(_root);
+			_controllers[1] = new ListsController(_root);
+			_controllers[2] = new HistoryController(_root);
+			_controllers[3] = new FrequencyController(_root);
 
 			var filterField = _root.Q<TextField>("filterField");
 			filterField.RegisterCallback<ChangeEvent<string>>(x => _currentController?.Filter(x.newValue));
@@ -57,10 +58,12 @@ namespace FavTool.GUI
 			_tabs[0] = _root.Q<VisualElement>("tab1");
 			_tabs[1] = _root.Q<VisualElement>("tab2");
 			_tabs[2] = _root.Q<VisualElement>("tab3");
+			_tabs[3] = _root.Q<VisualElement>("tab4");
 			_profile.onChangeState += SwitchTabs;
 			_tabs[0].RegisterCallback<ClickEvent>(x => _profile.State = ProfileModel.ModeState.Favorites);
-			_tabs[1].RegisterCallback<ClickEvent>(x => _profile.State = ProfileModel.ModeState.History);
-			_tabs[2].RegisterCallback<ClickEvent>(x => _profile.State = ProfileModel.ModeState.Frequency);
+			_tabs[1].RegisterCallback<ClickEvent>(x => _profile.State = ProfileModel.ModeState.Lists);
+			_tabs[2].RegisterCallback<ClickEvent>(x => _profile.State = ProfileModel.ModeState.History);
+			_tabs[3].RegisterCallback<ClickEvent>(x => _profile.State = ProfileModel.ModeState.Frequency);
 			
 			SwitchTabs(_profile.State, ProfileModel.ModeState.Favorites);
 	    }

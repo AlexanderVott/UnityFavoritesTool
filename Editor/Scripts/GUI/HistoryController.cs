@@ -13,7 +13,7 @@ namespace FavTool
 
 	    internal HistoryController(VisualElement root) : base(root)
 	    {
-		    _historyScroll = _panel.Q<ScrollView>("historyScroll");
+		    _historyScroll = _panel.Q<ScrollView>("scroll");
 
 			SubscribeEvents();
 		    OnChangedHistory();

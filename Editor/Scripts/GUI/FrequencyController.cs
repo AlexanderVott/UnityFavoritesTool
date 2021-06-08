@@ -13,7 +13,7 @@ namespace FavTool
 
 	    internal FrequencyController(VisualElement root) : base(root)
 	    {
-		    _freqScroll = _panel.Q<ScrollView>("frequencyScroll");
+		    _freqScroll = _panel.Q<ScrollView>("scroll");
 
 			SubscribeEvents();
 			OnChangedFrequency();

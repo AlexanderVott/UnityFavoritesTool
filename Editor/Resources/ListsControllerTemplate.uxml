@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+  <ui:VisualElement name="ListsController" style="flex-grow: 1; min-height: auto; height: 90%;">
+    <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" horizontal-scroller-visibility="AlwaysVisible" vertical-scroller-visibility="Hidden" mode="Horizontal" name="headerScroll" style="height: 34px;">
+      <ui:Button text="Favorites" display-tooltip-when-elided="true" name="tab1" />
+      <ui:Button text="Favorites" display-tooltip-when-elided="true" name="tab1" />
+    </ui:ScrollView>
+    <ui:ScrollView name="listsScroll" text="Lists" style="height: auto; flex-direction: column;" />
+  </ui:VisualElement>
+</ui:UXML>

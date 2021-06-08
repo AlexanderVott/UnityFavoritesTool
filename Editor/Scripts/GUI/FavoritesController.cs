@@ -14,7 +14,7 @@ namespace FavTool
 
 		internal FavoritesController(VisualElement root) : base(root)
 		{
-			_favGroupsScroll = _panel.Q<ScrollView>("favGroupsScroll");
+			_favGroupsScroll = _panel.Q<ScrollView>("scroll");
 
 			foreach (var itrG in _profile.Favorites.groups)
 				OnAddedGroup(itrG);
