@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement style="flex-direction: row;">
+        <ui:TextField picking-mode="Ignore" name="nameFolderField" style="width: 129px;" />
+        <ui:Button text="Rename" display-tooltip-when-elided="true" name="btnRename" />
+        <ui:Button text="X" display-tooltip-when-elided="true" name="btnDelete" style="padding-left: 6px; padding-right: 6px; margin-left: 8px; margin-right: 4px; flex-basis: auto;" />
+    </ui:VisualElement>
+</ui:UXML>

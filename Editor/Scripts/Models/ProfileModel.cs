@@ -14,7 +14,8 @@ namespace FavTool.Models
 			Favorites = 0,
 			Lists = 1,
 			History,
-			Frequency
+			Frequency,
+			Settings,
 		}
 
 		[SerializeField] private ModeState _state = ModeState.Favorites;
@@ -34,8 +35,11 @@ namespace FavTool.Models
 		[SerializeField] private FavoritesModel _favorites = new FavoritesModel();
 		internal FavoritesModel Favorites => _favorites;
 
-		[SerializeField] private HistoryCollectModel _history = new HistoryCollectModel();
-		internal HistoryCollectModel History => _history;
+		[SerializeField] private SimpleCollectModel _history = new SimpleCollectModel("history");
+		internal SimpleCollectModel History => _history;
+
+		[SerializeField] private FavoritesListsModel _lists = new FavoritesListsModel();
+		internal FavoritesListsModel Lists => _lists;
 
 		[SerializeField] private bool autoSaveProfileAsset = false;
 

@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
-  <ui:VisualElement name="Controller" style="flex-grow: 1; min-height: auto; height: 90%;">
-    <ui:ScrollView name="scroll" text="Lists" style="height: auto; flex-direction: column;" />
-  </ui:VisualElement>
+    <ui:VisualElement name="Controller" style="flex-grow: 1; min-height: auto; height: 90%;">
+        <ui:ScrollView name="scroll" text="Lists" style="height: auto; flex-direction: column; flex-grow: 1; min-height: auto;" />
+    </ui:VisualElement>
 </ui:UXML>

@@ -1,12 +1,15 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
     <ui:VisualElement name="visualRoot" style="height: 100%;">
-        <ui:VisualElement name="tabs" style="flex-direction: row; flex-wrap: wrap; min-height: 18px;">
-            <ui:Button text="Favorites" display-tooltip-when-elided="true" name="tab1" />
-            <ui:Button text="Lists" display-tooltip-when-elided="true" name="tab2" />
-            <ui:Button text="History" display-tooltip-when-elided="true" name="tab3" />
-            <ui:Button text="Frequency" display-tooltip-when-elided="true" name="tab4" />
+        <ui:VisualElement name="header" style="flex-direction: row; height: 23px; justify-content: space-between; min-height: 24px;">
+            <ui:VisualElement name="tabs" style="flex-direction: row; flex-wrap: wrap; min-height: 18px;">
+                <ui:Button text="Favorites" display-tooltip-when-elided="true" name="tab1" />
+                <ui:Button text="Lists" display-tooltip-when-elided="true" name="tab2" />
+                <ui:Button text="History" display-tooltip-when-elided="true" name="tab3" />
+                <ui:Button text="Frequency" display-tooltip-when-elided="true" name="tab4" />
+            </ui:VisualElement>
+            <ui:Button text="Settings" display-tooltip-when-elided="true" name="settingsTab" style="align-items: flex-end;" />
         </ui:VisualElement>
-        <ui:VisualElement name="searchPanel" touch-scroll-type="Elastic" style="height: 24px; flex-shrink: 0; flex-grow: 0; min-height: auto; flex-basis: 24px;">
+        <ui:VisualElement name="searchPanel" touch-scroll-type="Elastic" style="height: 24px; flex-shrink: 0; flex-grow: 0; min-height: 24px; flex-basis: 24px;">
             <ui:TextField picking-mode="Ignore" label="Filter" multiline="false" name="filterField" style="align-items: stretch; justify-content: flex-start; flex-direction: row; flex-wrap: nowrap; height: auto;" />
         </ui:VisualElement>
     </ui:VisualElement>

@@ -13,12 +13,12 @@ namespace FavTool.GUI
 
 		private BaseController _currentController;
 		
-		private readonly BaseController[] _controllers = new BaseController[4];
-		private readonly VisualElement[] _tabs = new VisualElement[4];
+		private readonly BaseController[] _controllers = new BaseController[5];
+		private readonly VisualElement[] _tabs = new VisualElement[5];
 		
 		private string _filter;
 
-		private const string SelectedClassUSS = "selected_tab";
+		public static readonly string SelectedClassUSS = "selected_tab";
 
 		[MenuItem("Window/Show favorites window _%#T")]
 	    public static void ShowFavoriteWindow()
@@ -51,6 +51,7 @@ namespace FavTool.GUI
 			_controllers[1] = new ListsController(_root);
 			_controllers[2] = new HistoryController(_root);
 			_controllers[3] = new FrequencyController(_root);
+			_controllers[4] = new SettingsController(_root);
 
 			var filterField = _root.Q<TextField>("filterField");
 			filterField.RegisterCallback<ChangeEvent<string>>(x => _currentController?.Filter(x.newValue));
@@ -59,11 +60,13 @@ namespace FavTool.GUI
 			_tabs[1] = _root.Q<VisualElement>("tab2");
 			_tabs[2] = _root.Q<VisualElement>("tab3");
 			_tabs[3] = _root.Q<VisualElement>("tab4");
+			_tabs[4] = _root.Q<VisualElement>("settingsTab");
 			_profile.onChangeState += SwitchTabs;
 			_tabs[0].RegisterCallback<ClickEvent>(x => _profile.State = ProfileModel.ModeState.Favorites);
 			_tabs[1].RegisterCallback<ClickEvent>(x => _profile.State = ProfileModel.ModeState.Lists);
 			_tabs[2].RegisterCallback<ClickEvent>(x => _profile.State = ProfileModel.ModeState.History);
 			_tabs[3].RegisterCallback<ClickEvent>(x => _profile.State = ProfileModel.ModeState.Frequency);
+			_tabs[4].RegisterCallback<ClickEvent>(x => _profile.State = ProfileModel.ModeState.Settings);
 			
 			SwitchTabs(_profile.State, ProfileModel.ModeState.Favorites);
 	    }

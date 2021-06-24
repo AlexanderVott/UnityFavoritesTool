@@ -17,31 +17,32 @@ namespace FavTool
 		    _historyScroll = _panel.Q<ScrollView>("scroll");
 
 			SubscribeEvents();
-		    OnChangedHistory();
+		    OnChangedCollect();
 	    }
 
 	    protected override void SubscribeEvents()
 	    {
 		    base.SubscribeEvents();
-		    _profile.History.onChangedHistory += OnChangedHistory;
+		    _profile.History.onChangedCollect += OnChangedCollect;
 	    }
 
 	    protected override void UnSubscribeEvents()
 	    {
 		    base.UnSubscribeEvents();
-		    _profile.History.onChangedHistory -= OnChangedHistory;
+		    _profile.History.onChangedCollect -= OnChangedCollect;
 		}
 
-	    private void OnChangedHistory()
+	    private void OnChangedCollect()
 	    {
 		    if (!IsActive)
 			    return;
 
 		    Clear();
 
+		    var items = _profile.History.Items;
 			var sortedHistory = String.IsNullOrEmpty(FilterValue) 
-												? _profile.History.History.ToList() 
-												: ToolUtils.FilterGuids(_profile.History.History, FilterValue);
+												? items 
+												: ToolUtils.FilterGuids(items, FilterValue);
 
 			sortedHistory.Reverse();
 		    var groupedHistory = sortedHistory.GroupBy(x => x);
@@ -61,7 +62,7 @@ namespace FavTool
 	    {
 		    base.Filter(filterParam);
 
-			OnChangedHistory();
+			OnChangedCollect();
 	    }
 
 	    private void Clear()

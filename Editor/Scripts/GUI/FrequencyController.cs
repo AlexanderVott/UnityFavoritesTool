@@ -23,13 +23,13 @@ namespace FavTool
 	    protected override void SubscribeEvents()
 	    {
 		    base.SubscribeEvents();
-		    _profile.History.onChangedHistory += OnChangedFrequency;
+		    _profile.History.onChangedCollect += OnChangedFrequency;
 	    }
 
 	    protected override void UnSubscribeEvents()
 	    {
 		    base.UnSubscribeEvents();
-		    _profile.History.onChangedHistory -= OnChangedFrequency;
+		    _profile.History.onChangedCollect -= OnChangedFrequency;
 	    }
 
 		private void OnChangedFrequency()
@@ -40,8 +40,8 @@ namespace FavTool
 			Clear();
 
 			var sortedHistory = String.IsNullOrEmpty(FilterValue) 
-											? _profile.History.History 
-											: ToolUtils.FilterGuids(_profile.History.History, FilterValue);
+											? _profile.History.Items 
+											: ToolUtils.FilterGuids(_profile.History.Items, FilterValue);
 			var orderedHistory = sortedHistory.GroupBy(x => x)
 								.OrderByDescending(x => x.Count());
 

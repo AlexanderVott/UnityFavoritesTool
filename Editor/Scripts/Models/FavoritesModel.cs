@@ -12,7 +12,7 @@ namespace FavTool.Models
     [Serializable]
     internal class FavoritesModel
     {
-        [SerializeField] private List<FavoritesGroupCollectModel> _groups = new List<FavoritesGroupCollectModel>();
+	    [SerializeField] private List<FavoritesGroupCollectModel> _groups = new List<FavoritesGroupCollectModel>();
         internal List<FavoritesGroupCollectModel> groups => _groups;
 
 		internal bool IsDirty { get; set; }
@@ -20,7 +20,7 @@ namespace FavTool.Models
 		internal event Action<FavoritesGroupCollectModel> onAddedGroup;
 		internal event Action<FavoritesGroupCollectModel> onRemovedGroup;
 		internal event Action<FavoritesGroupCollectModel> onChangedGroups;
-
+		
 		internal void Add(Object obj)
 		{
 			var path = ToolUtils.GetPath(obj);

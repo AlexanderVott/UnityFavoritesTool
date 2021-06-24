@@ -1,8 +1,6 @@
 using System;
-using System.Linq;
 using System.Reflection;
 using FavTool.Models;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -19,7 +17,7 @@ namespace FavTool
 
 		internal bool IsActive { get; private set; }
 
-		internal BaseController(VisualElement root)
+		internal BaseController(VisualElement root, bool autoHide = true)
 		{
 			_profile = ProfileModel.Instance;
 
@@ -27,12 +25,23 @@ namespace FavTool
 			var template = Resources.Load<VisualTreeAsset>(GetVisualAttribute(type).path);
 			_panel = template.CloneTree();
 			_panel.name = type.Name;
-			var visualRoot = root.Q<VisualElement>("visualRoot");
-			if (visualRoot == null)
-				visualRoot = root;
-			visualRoot.Add(_panel);
+			if (root != null)
+			{
+				var visualRoot = root.Q<VisualElement>("visualRoot");
+				if (visualRoot == null)
+					visualRoot = root;
+				if (visualRoot is ScrollView list)
+				{
+					list.Add(_panel);
+				}
+				else
+				{
+					visualRoot.Add(_panel);
+				}
+			}
 
-			Hide();
+			if (autoHide)
+				Hide();
 		}
 
 		private ControllerTemplateAttribute GetVisualAttribute(Type type) => type.GetCustomAttribute<ControllerTemplateAttribute>(true);
@@ -41,6 +50,8 @@ namespace FavTool
 
 		protected virtual void SubscribeEvents() { }
 		protected virtual void UnSubscribeEvents() { }
+
+		internal virtual void UpdateView(bool isHide) { }
 
 		#region IDisposable
 
@@ -54,12 +65,17 @@ namespace FavTool
 		{
 			IsActive = false;
 			_panel.AddToClassList("hide");
+			UpdateView(true);
+			UnSubscribeEvents();
 		}
 
 		internal void Show()
 		{
 			IsActive = true;
 			_panel.RemoveFromClassList("hide");
+			UnSubscribeEvents();
+			SubscribeEvents();
+			UpdateView(false);
 		}
 	}
 }

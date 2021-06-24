@@ -1,0 +1,11 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <ui:VisualElement name="Controller" style="flex-grow: 0; min-height: 256px; height: auto; flex-direction: column;">
+        <ui:Label text="Folders" display-tooltip-when-elided="true" style="flex-shrink: 1;" />
+        <ui:VisualElement name="createFolderPanel" style="flex-direction: row; height: auto; margin-top: 0; flex-grow: 0;">
+            <ui:Label text="Name:" display-tooltip-when-elided="true" style="-unity-text-align: middle-left;" />
+            <ui:TextField picking-mode="Ignore" max-length="14" name="nameField" style="width: 175px; margin-left: 3px;" />
+            <ui:Button text="Create" display-tooltip-when-elided="true" name="createNewOk" style="margin-left: 18px;" />
+        </ui:VisualElement>
+        <ui:ScrollView name="scroll" text="Lists" style="height: 100%; flex-direction: column; flex-grow: 1; flex-shrink: 1;" />
+    </ui:VisualElement>
+</ui:UXML>

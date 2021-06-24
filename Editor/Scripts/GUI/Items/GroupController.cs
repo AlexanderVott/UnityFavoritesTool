@@ -53,6 +53,7 @@ namespace FavTool
 			_data.onRemoved -= OnRemovedItem;
 			_items.Clear();
 		}
+
 		private void OnAddedItem(string guid)
 		{
 			_items.Add(guid, new ItemController(_data, guid));

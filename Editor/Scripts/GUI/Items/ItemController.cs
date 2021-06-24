@@ -31,7 +31,7 @@ namespace FavTool
 					_visual.Field.value = e.previousValue;
 			});
 
-			_visual.BtnDelete.clickable.clicked += () => _data.Remove(this._guid);
+			_visual.BtnDelete.clicked += () => _data.Remove(this._guid);
 		}
 
 		internal void Destroy() => _visual.RemoveFromHierarchy();
