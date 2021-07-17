@@ -29,7 +29,6 @@ namespace FavTool.GUI
 		    _field.objectType = typeof(Object);
 		    
 		    _btnDelete = this.Q<Button>("btnDelete");
-		    
 	    }
 
 	    internal void SetIcon(Texture2D texture)

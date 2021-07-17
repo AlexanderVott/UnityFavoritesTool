@@ -148,9 +148,17 @@ namespace FavTool
 			foreach (var itr in orderedHistory.Select(x => x.Key))
 				AddItem(itr);
 		}
+
+		private ICollectModel GetLastSelectedModel()
+		{
+			return _profile.Lists.LastIndex >= 0 && _profile.Lists.LastIndex < _profile.Lists.lists.Count
+				? _profile.Lists.lists[_profile.Lists.LastIndex]
+				: null;
+		}
+
 		private void AddItem(string guid)
 		{
-			_items.Add(new ItemController(_profile.History, guid));
+			_items.Add(new ItemController(GetLastSelectedModel(), guid));
 			var item = _items.Last();
 			_listsScroll.Add(item.Visual);
 		}
