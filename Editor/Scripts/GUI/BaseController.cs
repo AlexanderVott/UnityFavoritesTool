@@ -13,6 +13,8 @@ namespace FavTool
 		protected VisualElement _panel;
 		internal VisualElement Panel => _panel;
 
+		public virtual bool IsUseFilter { get; } = true;
+
 		protected string FilterValue { get; set; }
 
 		internal bool IsActive { get; private set; }

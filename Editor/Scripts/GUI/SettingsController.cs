@@ -9,6 +9,8 @@ namespace FavTool
 	    private FavoritesFoldersSettings _folders = null;
 	    private ScrollView _scroll = null;
 
+		public override bool IsUseFilter { get; } = false;
+
 	    internal SettingsController(VisualElement root) : base(root)
 	    {
 		    _scroll = Panel.Q<ScrollView>("scroll");

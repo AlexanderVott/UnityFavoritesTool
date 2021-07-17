@@ -15,7 +15,8 @@ namespace FavTool.GUI
 		
 		private readonly BaseController[] _controllers = new BaseController[5];
 		private readonly VisualElement[] _tabs = new VisualElement[5];
-		
+
+		private VisualElement _searchPanel;
 		private string _filter;
 
 		public static readonly string SelectedClassUSS = "selected_tab";
@@ -53,7 +54,8 @@ namespace FavTool.GUI
 			_controllers[3] = new FrequencyController(_root);
 			_controllers[4] = new SettingsController(_root);
 
-			var filterField = _root.Q<TextField>("filterField");
+			_searchPanel = _root.Q<VisualElement>("searchPanel");
+			var filterField = _searchPanel.Q<TextField>("filterField");
 			filterField.RegisterCallback<ChangeEvent<string>>(x => _currentController?.Filter(x.newValue));
 			
 			_tabs[0] = _root.Q<VisualElement>("tab1");
@@ -83,6 +85,14 @@ namespace FavTool.GUI
 		    {
 			    _currentController.Show();
 			    _currentController.Filter(_filter);
+			    if (_currentController.IsUseFilter)
+			    {
+				    _searchPanel.visible = true;
+			    }
+			    else
+			    {
+				    _searchPanel.visible = false;
+			    }
 			}
 	    }
 
